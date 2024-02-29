@@ -1,3 +1,5 @@
+import '../CSS/style.css';
+
 function Login() {
     return (
         <>
@@ -5,7 +7,7 @@ function Login() {
                 <title>Log In/Sign Up</title>
                 <meta charset="UTF-8" />
             </head>
-            <body>
+            <body class="login-page">
                 <h1>PetSmarter</h1>
                 <div class="login">
                     <div class="subtitle">
@@ -13,25 +15,28 @@ function Login() {
                     </div>
 
                     <form class="user-pass">
-                        <input type="text" name="Username" id="user" placeholder="Username" minlength="5" maxlength="20"></input>
-                        <input type="password" name="Password" id="pass" placeholder="Password" minlength="8" maxlength="20"></input>
+                        <input type="text" name="Username" id="user" placeholder="Username:" minlength="5" maxlength="20"></input>
+                        <input type="password" name="Password" id="pass" placeholder="Password:" minlength="8" maxlength="20"></input>
 
                         <div class="login-submit">
-                            <input type="submit" name="login-button" id="login-button" value="Log In!"></input>
+                            <input type="submit" class="login-button" name="login-button" id="login-button" value="Sign In"></input>
                         </div>
                     </form>
                 </div>
+                <h2>or</h2>
                 <div class="signup">
-                    <h3>First time? Create an account!</h3>
+                    <div class="subtitle">
+                        <h2>Sign Up</h2>
+                    </div>
 
                     <div class="user-pass">
-                        <input type="text" name="Username" id="user" placeholder="Username" minlength="5" maxlength="20"></input>
-                        <input type="password" name="Password" id="pass" placeholder="Password" minlength="8" maxlength="20"></input>
-                        <input type="password" name="Password" id="pass" placeholder=" Confirm password" minlength="8" maxlength="20"></input>
+                        <input type="text" name="Username" id="user" placeholder="Set Username:" minlength="5" maxlength="20"></input>
+                        <input type="password" name="Password" id="pass" placeholder="Set Password:" minlength="8" maxlength="20"></input>
+                        <input type="password" name="Password" id="pass" placeholder=" Confirm Password:" minlength="8" maxlength="20"></input>
                     </div>
 
                     <div class="signup-submit">
-                        <input type="submit" name="signup-button" id="signup-button" value="Create account"></input>
+                        <input type="submit" class="signup-button" name="signup-button" id="signup-button" value="Create Account"></input>
                     </div>
                 </div>
             </body>

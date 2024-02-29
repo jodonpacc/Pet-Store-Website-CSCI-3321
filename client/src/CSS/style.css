@@ -1,0 +1,11 @@
+html {
+    background-color: #2D3142;
+}
+
+h1,h2 {
+    color: #FFFFFF;
+}
+
+.login-button, .signup-button {
+    color: #EF8354;
+}
