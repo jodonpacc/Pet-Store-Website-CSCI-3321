@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
+//const db = require("./db_connection.js").db_connection;
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -10,7 +11,7 @@ const cors = require('cors');
 app.use(cors())
 
 app.get('/', (req, res) => {
-  res.send('Hello')
+  res.send('Hello');
 })
 
 // view engine setup
