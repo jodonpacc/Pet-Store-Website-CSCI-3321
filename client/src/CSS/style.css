@@ -1,11 +1,32 @@
 html {
     background-color: #2D3142;
+    font-family: sans-serif;
 }
 
-h1,h2 {
+h1,h2,h3 {
     color: #FFFFFF;
 }
 
+.copy-symbol {
+    font-size: small;
+}
+
+h2 {
+    text-decoration: underline;
+}
+
+.login-input {
+    background-color: #FFFFFF;
+    color: #2D3142;
+    text-align: center;
+    border-radius: 12px;
+    border: none;
+}
+
 .login-button, .signup-button {
-    color: #EF8354;
+    background-color: #EF8354;
+    color: #FFFFFF;
+    text-align: center;
+    border-radius: 12px;
+    border: none;
 }
