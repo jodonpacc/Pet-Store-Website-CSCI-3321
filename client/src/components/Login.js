@@ -60,40 +60,42 @@ function Login() {
             </head>
             <body class="login-page">
                 <h1 class="page-title">PetSmarter<span class="copy-symbol">&copy;</span></h1>
-                <div class="login">
-                    <div class="subtitle">
-                        <h2>Please Log In</h2>
-                    </div>
-
-                    <form class="user-pass" onSubmit={handleLoginSubmit}>
-                        <input type="text" class="login-input" name="Username" id="user" placeholder="Username:" required="required" minlength="5" maxlength="20" 
-                        onChange={e => setLoginValues({...loginValues, username: e.target.value})}></input>
-                        <input type="password" class="login-input" name="Password" id="pass" placeholder="Password:" required="required" minlength="8" maxlength="20" 
-                        onChange={e => setLoginValues({...loginValues, password: e.target.value})}></input>
-
-                        <div class="login-submit">
-                            <input type="submit" class="login-button" name="login-button" id="login-button" value="Sign In"></input>
+                <div class="main-page">
+                    <div class="login">
+                        <div class="subtitle">
+                            <h2>Please Log In</h2>
                         </div>
-                    </form>
-                </div>
-                <h3>or</h3>
-                <div class="signup">
-                    <div class="subtitle">
-                        <h2>Sign Up</h2>
+
+                        <form class="user-pass" onSubmit={handleLoginSubmit}>
+                            <input type="text" class="login-input" name="Username" id="user" placeholder="Username:" required="required" minlength="5" maxlength="20" 
+                            onChange={e => setLoginValues({...loginValues, username: e.target.value})}></input>
+                            <input type="password" class="login-input" name="Password" id="pass" placeholder="Password:" required="required" minlength="8" maxlength="20" 
+                            onChange={e => setLoginValues({...loginValues, password: e.target.value})}></input>
+
+                            <div class="login-submit">
+                                <input type="submit" class="login-button" name="login-button" id="login-button" value="Sign In"></input>
+                            </div>
+                        </form>
                     </div>
-
-                    <form class="user-pass" onSubmit={handleAccountSubmit}>
-                        <input type="text" class="login-input" name="Username" id="user" placeholder="Set Username:" required="required" minlength="5" maxlength="20" 
-                        onChange={e => setAccountValues({...accountValues, username: e.target.value})}></input>
-                        <input type="password" class="login-input" name="Password" id="pass" placeholder="Set Password:" required="required" minlength="8" maxlength="20" 
-                        onChange={e => setAccountValues({...accountValues, password: e.target.value})}></input>
-                        <input type="password" class="login-input" name="Password" id="pass" placeholder=" Confirm Password:" required="required" minlength="8" maxlength="20" 
-                        onChange={e => setAccountValues({...accountValues, passwordConfirm: e.target.value})}></input>
-
-                        <div class="signup-submit">
-                            <input type="submit" class="signup-button" name="signup-button" id="signup-button" value="Create Account"></input>
+                    <h3 class="or-text">or</h3>
+                    <div class="signup">
+                        <div class="subtitle">
+                            <h2>Sign Up</h2>
                         </div>
-                    </form>
+
+                        <form class="user-pass" onSubmit={handleAccountSubmit}>
+                            <input type="text" class="login-input" name="Username" id="user" placeholder="Set Username:" required="required" minlength="5" maxlength="20" 
+                            onChange={e => setAccountValues({...accountValues, username: e.target.value})}></input>
+                            <input type="password" class="login-input" name="Password" id="pass" placeholder="Set Password:" required="required" minlength="8" maxlength="20" 
+                            onChange={e => setAccountValues({...accountValues, password: e.target.value})}></input>
+                            <input type="password" class="login-input" name="Password" id="pass" placeholder=" Confirm Password:" required="required" minlength="8" maxlength="20" 
+                            onChange={e => setAccountValues({...accountValues, passwordConfirm: e.target.value})}></input>
+
+                            <div class="signup-submit">
+                                <input type="submit" class="signup-button" name="signup-button" id="signup-button" value="Create Account"></input>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </body>
         </>
