@@ -40,8 +40,8 @@ function Login() {
             axios.post('http://localhost:9000/account/create_account', accountValues)
             .then(res => {
                 // server sends back one of the following responses
-                // "There is already an account associated with this username." + success false
-                // "Account [username] successfully created. You may now log in." + success false
+                // "There is already an account associated with this username."
+                // "Account [username] successfully created. You may now log in."
                 // Display the returned message
                 console.log(res.data);
             })
