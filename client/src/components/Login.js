@@ -22,6 +22,11 @@ function Login() {
             if(res.data.success) {
                 // Do login stuff
                 console.log("success");
+
+                if(res.data.isAdmin) {
+                    // Do admin login stuff
+                    console.log("admin user logged in");
+                }
             }
         })
         .catch(err => console.log(err));

@@ -6,7 +6,7 @@ router.use(express.json());
 
 // Receiving a username and password for logging in
 router.post("/login", function (req, res) {
-    let sql = "SELECT password FROM User WHERE user_name = ?";
+    let sql = "SELECT password, is_admin FROM User WHERE user_name = ?";
     db.query(sql, [req.body.username], (err, result) => {
         if (err) return res.json(err);
 
@@ -14,7 +14,7 @@ router.post("/login", function (req, res) {
             // check pass
             if (req.body.password === result[0].password) {
                 // login
-                return res.json({ message: "Successfully logged in as " + req.body.username + ".", success: true });
+                return res.json({ message: "Successfully logged in as " + req.body.username + ".", success: true, isAdmin: result[0].is_admin == 1 });
             } else {
                 // user entered the wrong password
                 return res.json({ message: "The given password is incorrect.", success: false });
