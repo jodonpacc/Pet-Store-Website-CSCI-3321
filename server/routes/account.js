@@ -4,11 +4,6 @@ const db = require("../db_connection.js").db_connection;
 
 router.use(express.json());
 
-// Home page route
-router.get("/", function (req, res) {
-    res.send("API home page");
-});
-
 // Receiving a username and password for logging in
 router.post("/login", function (req, res) {
     let sql = "SELECT password FROM User WHERE user_name = ?";
