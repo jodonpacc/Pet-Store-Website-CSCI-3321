@@ -1,0 +1,68 @@
+html {
+    background-color: #2D3142;
+    font-family: sans-serif;
+}
+
+.login-page {
+    text-align: center;
+}
+
+.main-page {
+    display: grid;
+    grid-template-columns: 1fr 0.1fr 1fr;
+}
+
+h1,h2,h3 {
+    color: #FFFFFF;
+}
+
+.page-title {
+    font-size: 70px;
+    margin-top: 30px;
+    margin-bottom: 5px;
+}
+
+.copy-symbol {
+    font-size: large;
+}
+
+.subtitle {
+    font-size: 25px;
+    text-decoration: underline;
+    text-decoration-color: #FFFFFF;
+}
+
+.or-text {
+    font-size: 25px;
+    font-weight: lighter;
+    position: relative;
+    top: 20px;
+}
+
+.user-pass {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+}
+
+.login-input {
+    background-color: #FFFFFF;
+    color: #2D3142;
+    font-size: large;
+    height: 50px; 
+}
+
+.login-button, .signup-button {
+    background-color: #EF8354;
+    color: #FFFFFF;
+    height: 80px;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.login-input, .login-button, .signup-button {
+    text-align: center;
+    width: 80%;
+    border-radius: 30px;
+    border: none;
+    margin: 0 auto;
+}

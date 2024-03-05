@@ -1,10 +1,11 @@
 var createError = require('http-errors');
 var express = require('express');
-//const db = require("./db_connection.js").db_connection;
+const db = require("./db_connection.js").db_connection;
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var app = express();
+const account = require('./routes/account.js');
 
 //for cross origin resource sharing (to share with React)???
 const cors = require('cors');
@@ -12,7 +13,9 @@ app.use(cors())
 
 app.get('/', (req, res) => {
   res.send('Hello');
-})
+});
+
+app.use('/account', account);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
