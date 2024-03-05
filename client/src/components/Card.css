@@ -1,0 +1,26 @@
+.image-backer {
+    background: #EF8354;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-card-title {
+    font-size: 34px;
+}
+
+.category-card-title {
+    text-decoration: underline;
+    font-size: 40px;
+}
+
+.cat-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+}
