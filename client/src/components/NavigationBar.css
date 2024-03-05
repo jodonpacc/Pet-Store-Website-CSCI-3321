@@ -1,0 +1,40 @@
+.fake-hr {
+    width: 100%;
+    height: 1px;
+    background: #2D3142;
+}
+
+#nav-sections {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+#left-items {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+#right-items {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.logo {
+    font-size: 37px;
+    font-weight: bold;
+}
+
+.other-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 30px;
+}
+.other-tick {
+    background: #2D3142;
+    width: 30px;
+    height: 3px;
+}
