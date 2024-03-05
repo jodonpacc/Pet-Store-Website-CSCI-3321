@@ -6,6 +6,7 @@ import Login from './pages/Login/Login';
 import ProductView from './pages/ProductView/ProductView';
 import ErrorPage from './pages/Errorpage/Errorpage'
 import reportWebVitals from './reportWebVitals';
+import HomePage from './pages/Home/Home';
 
 
 const router = createBrowserRouter([
@@ -21,7 +22,7 @@ const router = createBrowserRouter([
   {
     path: "product",
     element: ProductView(13),
-  }
+  },
   {
     path: "home",
     element: <HomePage />,

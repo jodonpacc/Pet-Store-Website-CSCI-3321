@@ -1,4 +1,5 @@
-import '../CSS/style.css';
+import '../../assets/styles/global.css'
+import './style.css';
 import React, { useState } from 'react';
 import axios from 'axios';
 

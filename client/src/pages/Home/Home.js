@@ -1,6 +1,6 @@
-import ProductCard from "../components/ProductCard";
-import CategoryCard from "../components/CategoryCard";
-import NavigationBar from "../components/NavigationBar";
+import ProductCard from "../../components/ProductCard";
+import CategoryCard from "../../components/CategoryCard";
+import NavigationBar from "../../components/NavigationBar";
 import './Home.css'
 
 function HomePage({}) {
