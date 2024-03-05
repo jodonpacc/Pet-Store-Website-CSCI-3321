@@ -5,6 +5,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var app = express();
+const product = require('./routes/product.js');
 const account = require('./routes/account.js');
 
 //for cross origin resource sharing (to share with React)???
@@ -16,6 +17,8 @@ app.get('/', (req, res) => {
 });
 
 app.use('/account', account);
+
+app.use('/product', product)
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
