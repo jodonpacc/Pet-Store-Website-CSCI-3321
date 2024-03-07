@@ -13,7 +13,7 @@ function ProductCard({id, img, title, destination}) {
                 <img>{img}</img>
                 image
             </div>
-            <div className="product-card-title" onclick={gotoDest}>{title}</div>
+            <div className="product-card-title" onClick={gotoDest}>{title}</div>
         </div>
     );
 }
