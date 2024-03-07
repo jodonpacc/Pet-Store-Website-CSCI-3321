@@ -1,6 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
-const db = require("./db_connection.js").db_connection;
+// const db = require("./db_connection.js").db_connection;
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');

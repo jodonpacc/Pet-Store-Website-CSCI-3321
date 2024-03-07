@@ -1,7 +1,75 @@
-p {
+body {
+    background: #BFC0C0;
+    font-family: sans-serif;
+}
+
+.PVcontainer {
+    margin-top: 50px;
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
     color: #2D3142;
 }
 
-.productDesHeader {
+.PVleft {
+    grid-column: 1;
+    text-align: center;
+}
+
+.PVprice {
     font-weight: bold;
+    font-size: 35px;
+    margin-top: 10px;
+}
+
+
+.PVright {
+    grid-column: 2;
+}
+
+#PVtitle {
+    font-size: 50px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+#PVtitle-line {
+    width: 90%;
+    height: 2px;
+    background-color: #2D3142;
+}
+
+.PVright p {
+    font-size: 25px;
+}
+
+.product-description {
+    font-weight: bold;
+}
+
+/* TODO: Make image size responsive maybe */
+.PVimg {
+    width: 350px;
+    height: 350px;
+    /* set vertical padding to be smaller than horizontal */
+    padding: 20px 30px;
+    background-color: #EF8354;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.PVstar {
+    width: 44px;
+    height: 44px;
+    margin-top: 10px;
+    margin-right: 5px;
+}
+
+#PVhalf-star {
+    width: 22px;
+}
+
+#star-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }
