@@ -19,10 +19,10 @@ function HomePage({}) {
                 </div>
                 <div className="fake-hr"></div>
                 <div id="product-array">
-                    <ProductCard title={"Product Card"}/>
-                    <ProductCard title={"Product Card"}/>
-                    <ProductCard title={"Product Card"}/>
-                    <ProductCard title={"Product Card"}/>
+                    <ProductCard title={"Product Card"} destination="/product"/>
+                    <ProductCard title={"Product Card"} destination="/product"/>
+                    <ProductCard title={"Product Card"} destination="/product"/>
+                    <ProductCard title={"Product Card"} destination="/product"/>
                 </div>
             </div>
         </div>

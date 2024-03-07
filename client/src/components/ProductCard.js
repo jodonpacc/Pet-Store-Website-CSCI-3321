@@ -3,8 +3,8 @@ import "./Card.css"
 
 function ProductCard({id, img, title, destination}) {
 
-    const gotoDest = (e) => {
-        //fetch
+    const gotoDest = (e, destination) => {
+        window.location.href = destination;
     }  
 
     return (
@@ -13,7 +13,7 @@ function ProductCard({id, img, title, destination}) {
                 <img>{img}</img>
                 image
             </div>
-            <div className="product-card-title" onClick={gotoDest}>{title}</div>
+            <div className="product-card-title" onClick={(e) => gotoDest(e, destination)}>{title}</div>
         </div>
     );
 }

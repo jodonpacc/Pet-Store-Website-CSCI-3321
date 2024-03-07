@@ -22,6 +22,7 @@ function Login() {
                 console.log(res.data.message);
                 if (res.data.success) {
                     // Do login stuff
+                    window.location.href = "/home"
                     console.log("success");
 
                     if (res.data.isAdmin) {
