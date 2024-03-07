@@ -7,7 +7,7 @@ function NavigationBar() {
             <div id="nav-sections"> 
                 <div id="left-items">
                     <div className="logo">PetSmarter</div>
-                    <input type="text" placeholder="Search..." maxlength="40"></input>
+                    <input type="text" placeholder="Search..." maxLength="40"></input>
                 </div>
                 <div id="right-items">
                     <div>Cart</div>

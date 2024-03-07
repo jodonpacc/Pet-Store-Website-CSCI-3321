@@ -7,6 +7,7 @@ import ProductView from './pages/ProductView/ProductView';
 import ErrorPage from './pages/Errorpage/Errorpage'
 import reportWebVitals from './reportWebVitals';
 import HomePage from './pages/Home/Home';
+import CartPage from './pages/Cart/Cart';
 
 
 const router = createBrowserRouter([
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
   {
     path: "home",
     element: <HomePage />,
+  },
+  {
+    path: "Cart",
+    element: <CartPage />,
   },
 ]);
 
