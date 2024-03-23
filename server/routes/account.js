@@ -8,10 +8,14 @@ router.use(sess);
 
 router.use(express.json());
 
-// Test purposes
-// router.get("/", function (req, res) {
-//     console.log(req.session);
-// });
+// Requested from frontend and returns username and is_admin from session
+router.post("/", function (req, res) {
+    if(req.session.username) {
+        return res.json({ valid: true, username: req.session.username, is_admin: req.session.is_admin });
+    } else {
+        return res.json({ valid: false });
+    }
+});
 
 // Receiving a username and password for logging in
 router.post("/login", function (req, res) {

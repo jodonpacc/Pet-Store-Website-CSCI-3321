@@ -4,8 +4,10 @@ import axios from 'axios';
 
 function Login() {
     document.body.style.backgroundColor = '#2D3142'
+    
     // Need this to be true to send session information between React and Express
     axios.defaults.withCredentials = true;
+
     // Keeps track of the values the user has entered in the Log In fields
     const [loginValues, setLoginValues] = useState({
         username: '',
