@@ -14,21 +14,14 @@ function Login() {
         e.preventDefault();
         axios.post('http://localhost:9000/account/login', loginValues)
             .then(res => {
-                // server sends back one of the following responses:
-                // "There is no account with the given username." + success: false
-                // "The given password is incorrect." + success: false
-                // "Successfully logged in as [username]." + success: true
-                // Display the returned message
+                // Server sends back status message, display it
                 console.log(res.data.message);
-                if (res.data.success) {
-                    // Do login stuff
-                    window.location.href = "/home"
-                    console.log("success");
+                alert(res.data.message);
 
-                    if (res.data.isAdmin) {
-                        // Do admin login stuff
-                        console.log("admin user logged in");
-                    }
+                // Server sends back a boolean success, indicating if login was successful
+                if (res.data.success) {
+                    // Redirect to home page
+                    window.location.href = "/home"
                 }
             })
             .catch(err => console.log(err));
@@ -46,10 +39,7 @@ function Login() {
         if (accountValues.password === accountValues.passwordConfirm) {
             axios.post('http://localhost:9000/account/create_account', accountValues)
                 .then(res => {
-                    // server sends back one of the following responses
-                    // "There is already an account associated with this username."
-                    // "Account [username] successfully created. You may now log in."
-                    // Display the returned message
+                    // Server sends back status message, display it
                     console.log(res.data);
                 })
                 .catch(err => console.log(err));

@@ -1,4 +1,3 @@
-
 const db = require("../db_connection.js").db_connection;
 
 const product = (req, res) => {

@@ -1,12 +1,12 @@
 var createError = require('http-errors');
 var express = require('express');
-// const db = require("./db_connection.js").db_connection;
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var app = express();
 const product = require('./routes/product.js');
 const account = require('./routes/account.js');
+const session = require('express-session');
 
 //for cross origin resource sharing (to share with React)???
 const cors = require('cors');
@@ -16,9 +16,21 @@ app.get('/', (req, res) => {
   res.send('Hello');
 });
 
+// Use account.js route in ./routes for /account
 app.use('/account', account);
 
-app.use('/product', product)
+// Use product.js route in ./routes for /product
+app.use('/product', product);
+
+// Set up express-session for saving information to user session
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 1000*60*60*24 // Equal to 1 day
+    }
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

@@ -1,4 +1,3 @@
-
 const express = require("express");
 const router = express.Router();
 const db = require("../db_connection.js").db_connection;
@@ -15,7 +14,7 @@ router.post("/login", function (req, res) {
             // check pass
             if (req.body.password === result[0].password) {
                 // login
-                return res.json({ message: "Successfully logged in as " + req.body.username + ".", success: true, isAdmin: result[0].is_admin == 1 });
+                return res.json({ message: "Successfully logged in as " + req.body.username + ".", success: true });
             } else {
                 // user entered the wrong password
                 return res.json({ message: "The given password is incorrect.", success: false });
