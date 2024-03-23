@@ -2,7 +2,16 @@ const express = require("express");
 const router = express.Router();
 const db = require("../db_connection.js").db_connection;
 
+// For session stuff
+const sess = require("../session.js").sessionSetup;
+router.use(sess);
+
 router.use(express.json());
+
+// Test purposes
+// router.get("/", function (req, res) {
+//     console.log(req.session);
+// });
 
 // Receiving a username and password for logging in
 router.post("/login", function (req, res) {
@@ -14,6 +23,8 @@ router.post("/login", function (req, res) {
             // check pass
             if (req.body.password === result[0].password) {
                 // login
+                req.session.username = req.body.username;
+                req.session.is_admin = result[0].is_admin;
                 return res.json({ message: "Successfully logged in as " + req.body.username + ".", success: true });
             } else {
                 // user entered the wrong password

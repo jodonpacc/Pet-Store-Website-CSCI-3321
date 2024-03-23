@@ -4,6 +4,8 @@ import axios from 'axios';
 
 function Login() {
     document.body.style.backgroundColor = '#2D3142'
+    // Need this to be true to send session information between React and Express
+    axios.defaults.withCredentials = true;
     // Keeps track of the values the user has entered in the Log In fields
     const [loginValues, setLoginValues] = useState({
         username: '',
@@ -15,7 +17,6 @@ function Login() {
         axios.post('http://localhost:9000/account/login', loginValues)
             .then(res => {
                 // Server sends back status message, display it
-                console.log(res.data.message);
                 alert(res.data.message);
 
                 // Server sends back a boolean success, indicating if login was successful
