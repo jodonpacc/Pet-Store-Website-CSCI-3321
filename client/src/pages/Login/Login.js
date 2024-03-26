@@ -1,11 +1,11 @@
 import './Login.css';
-import React, { useState } from 'react';
+import { React, useState } from 'react';
 import axios from 'axios';
 
 function Login() {
     document.body.style.backgroundColor = '#2D3142'
     
-    // Need this to be true to send session information between React and Express
+    // This line must be present on every main page so that session information is circulated properly
     axios.defaults.withCredentials = true;
 
     // Keeps track of the values the user has entered in the Log In fields

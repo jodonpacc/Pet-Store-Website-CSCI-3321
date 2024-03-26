@@ -9,7 +9,7 @@ router.use(sess);
 router.use(express.json());
 
 // Requested from frontend and returns username and is_admin from session
-router.post("/", function (req, res) {
+router.get("/", function (req, res) {
     if(req.session.username) {
         return res.json({ valid: true, username: req.session.username, is_admin: req.session.is_admin });
     } else {

@@ -2,8 +2,12 @@ import ProductCard from "../../components/ProductCard";
 import CategoryCard from "../../components/CategoryCard";
 import NavigationBar from "../../components/NavigationBar";
 import './Home.css'
+import axios from 'axios';
 
 function HomePage({}) {
+
+    // This line must be present on every main page so that session information is circulated properly
+    axios.defaults.withCredentials = true;
 
     return (
         <div id="home-page">

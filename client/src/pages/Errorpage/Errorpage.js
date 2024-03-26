@@ -1,6 +1,9 @@
 import { useRouteError } from "react-router-dom";
+import axios from 'axios'
 
 function ErrorPage() {
+    // This line must be present on every main page so that session information is circulated properly
+    axios.defaults.withCredentials = true;
     const error = useRouteError();
     console.error(error);
 

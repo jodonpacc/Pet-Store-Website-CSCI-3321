@@ -8,6 +8,9 @@ import axios from 'axios'
 
 
 function ProductView(productID) {
+    // This line must be present on every main page so that session information is circulated properly
+    axios.defaults.withCredentials = true;
+
     return placeholderPage();
 
     // console.log("routing works");

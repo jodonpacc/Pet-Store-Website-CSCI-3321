@@ -4,7 +4,7 @@ import axios from 'axios';
 // Handle the return value in a callback
 // Returns an object with fields (valid, username, is_admin)
 export function getUserInfo(callback) {
-    axios.post('http://localhost:9000/account')
+    axios.get('http://localhost:9000/account')
         .then(res => {
             // Server sends back username and is_admin from session info
             callback(res.data);

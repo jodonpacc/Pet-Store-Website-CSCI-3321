@@ -1,7 +1,8 @@
 import NavigationBar from "../../components/NavigationBar";
 import IconText from "../../components/IconText";
 import {React, useEffect, useState} from 'react';
-import './Cart.css'
+import './Cart.css';
+import axios from 'axios';
 
 function CartItem({id}) {
 
@@ -18,6 +19,9 @@ function CartItem({id}) {
 }
 
 function CartPage({}) {
+    // This line must be present on every main page so that session information is circulated properly
+    axios.defaults.withCredentials = true;
+
     const [cartItems, setCartItems] = useState([])
 
     useEffect(() => {
