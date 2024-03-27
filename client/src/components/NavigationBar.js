@@ -2,6 +2,7 @@ import "./NavigationBar.css"
 import CartIcon from "../assets/images/cart.png"
 import { React, useEffect, useState } from 'react';
 import { getUserInfo } from '../helperFunctionality/sessionInfo'
+import axios from 'axios';
 
 function NavigationBar() {
 
@@ -24,24 +25,21 @@ function NavigationBar() {
         });
     }, []);
 
-    // When the cart icon is pressed
-    const gotoCart = (e) => {
-        window.location.href = "/Cart";
-    }
-
-    // When admin button is pressed
-    const gotoAdmin = (e) => {
-        window.location.href = "/Admin";
-    }
-
-    // When Log In button is pressed
-    const gotoLogin = (e) => {
-        window.location.href = "/Login";
-    }
+    const gotoPage = (page) => {
+        window.location.href = "/" + page;
+    };
 
     // When Log Out button is pressed
-    const logOut = (e) => {
-        // in progress
+    const logOut = () => {
+        axios.post('http://localhost:9000/account/logout')
+            .then(res => {
+                alert(res.data);
+                setUserInfo({isLoggedIn: false, isAdmin: false});
+                
+                // Redirect to the Login page?
+                //window.location.href = "/Login";
+            })
+            .catch(err => console.log(err));
     }
 
     return (
@@ -50,13 +48,13 @@ function NavigationBar() {
                 <div id="left-items">
                     <div className="logo">PetSmarter</div>
                     <input type="text" placeholder="Search..." maxLength="40"></input>
-                    {userInfo.isAdmin && <button id="admin-button" onClick={gotoAdmin}>Admin</button>}
+                    {userInfo.isAdmin && <button id="admin-button" onClick={() => gotoPage('admin')}>Admin</button>}
                 </div>
                 <div id="right-items">
-                    <img src={CartIcon} onClick={gotoCart} style={{width: 20, height: 20}}></img>
+                    <img src={CartIcon} onClick={() => gotoPage('Cart')} style={{width: 20, height: 20}}></img>
                     {userInfo.isLoggedIn
                         ? <button className="login-out-button" onClick={logOut}>Log Out</button>
-                        : <button className="login-out-button" onClick={gotoLogin}>Log In</button>}
+                        : <button className="login-out-button" onClick={() => gotoPage('login')}>Log In</button>}
                     <div className="other-button">
                         <div className="other-tick"></div>
                         <div className="other-tick"></div>

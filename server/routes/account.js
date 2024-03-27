@@ -10,7 +10,7 @@ router.use(express.json());
 
 // Requested from frontend and returns username and is_admin from session
 router.get("/", function (req, res) {
-    if(req.session.username) {
+    if(req.session.username && req.session.username.length >= 5) {
         return res.json({ valid: true, username: req.session.username, is_admin: req.session.is_admin });
     } else {
         return res.json({ valid: false });
@@ -52,7 +52,7 @@ router.post("/create_account", function (req, res) {
             // create account
             let sql2 = "INSERT INTO User (user_name, password, is_admin) VALUES (?, ?, false)";
             db.query(sql2, [req.body.username, req.body.password], (err2, result2) => {
-                if (err) {
+                if (err2) {
                     return res.json(err);
                 } else {
                     return res.json("Account " + req.body.username + " successfully created. You may now log in.");
@@ -63,6 +63,13 @@ router.post("/create_account", function (req, res) {
             return res.json("There is already an account associated with this username.");
         }
     });
+});
+
+// Receiving request to log out the user
+router.post("/logout", function(req, res) {
+    req.session.username = '';
+    req.session.is_admin = false;
+    return res.json("Successfully logged out.");
 });
 
 module.exports = router;
