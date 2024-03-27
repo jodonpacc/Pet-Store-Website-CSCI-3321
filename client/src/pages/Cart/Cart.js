@@ -30,7 +30,7 @@ function CartPage({}) {
             <div id="cart-sections">
                 <div id="cart-description" style={{width: window.innerWidth / 2}}>
                     <div id="cart-desc-header">
-                        <IconText icon="cart" text="Cart" size={20}/>
+                        <IconText icon="cart" text="Cart Items" size={25}/>
                     </div>
                     <div className="fake-hr"></div>
                     <div id="items">

@@ -9,8 +9,9 @@
 }
 
 #cart-sections {
-    display: flex;
-    outline: 1px solid #2D3142;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    outline: 3px solid #2D3142;
     width: 100%;
     height: 100%;
 }
@@ -18,20 +19,23 @@
 #cart-description {
     height: 100%;
     width: 100%;
-    outline: 1px solid #2D3142;
+    outline: 3px solid #2D3142;
 }
 
 #cart-desc-header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
+    width: 96%;
     padding: 10px;
     font-weight: bold;
+    outline: 3px solid #2D3142;
 }
 
 .fake-hr {
-    width: 100%;
+    position: relative;
+    left: 16px;
+    width: 95%;
     height: 1px;
     background: #2D3142;
 }
@@ -44,7 +48,9 @@
 .item-fields {
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    width: 95%;
+    padding: 15px;
+    font-size: 20px;
 }
 
 .prod-name {
