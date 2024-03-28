@@ -4,11 +4,12 @@ import halfStarImg from '../../assets/images/halfStar.png';
 import "./ProductView.css"
 import NavigationBar from "../../components/NavigationBar";
 import axios from 'axios'
+import { React, useState } from 'react';
 
 
 
 function ProductView(productID) {
-    return placeholderPage();
+    return (<PlaceholderPage/>);
 
     // console.log("routing works");
     // axios.get('http://localhost:9000/product', {
@@ -47,28 +48,46 @@ function ProductView(productID) {
     //         console.log("can't find product")
     //         return (<><p>NEED TO MAKE ERROR PAGE</p></>);
     //     });
-}
+} 
 
-function placeholderPage() {
+function PlaceholderPage({id}) {
+    // Fetch product info from backend in the form of:
+    /* {
+        title:
+        description:
+        price:
+        img_filename:
+        rating:
+    } */
+    const [info, setInfo] = useState(fetch('/product?id=' + id).then(data => {
+        if (data) { // convert img_filename to image here
+            return {...data, image: data.img_filename};
+        }
+        console.log("Failed to fetch product info with id " + id)
+        return null;
+    })) 
+
+    /*
     const name = "Product Title"
     const description = "Placeholder description"
     const price = 39.99
     const productImg = defaultProductImg
     const rating = 4.5
+    */
 
     return (
         <div>
             <NavigationBar></NavigationBar>
             <div class="PVcontainer">
                 <div class="PVleft">
-                    <img src={productImg} class="PVimg" alt="Product"></img>
-                    <div class="PVprice">${price}</div>
+                    <img src={info.image} class="PVimg" alt="Product"></img>
+                    <div class="PVprice">${info.price}</div>
                 </div>
                 <div class="PVright">
-                    <h1 id="PVtitle">{name}</h1>
+                    <h1 id="PVtitle">{info.title}</h1>
                     <div id="PVtitle-line"></div>
-                    {starGenerator(rating)}
-                    <p><span class="product-description">Description: </span>{description}</p>
+                    {starGenerator(info.rating)}
+                    <p><span class="product-description">Description: </span>{info.description}</p>
                 </div>
             </div>
         </div>
