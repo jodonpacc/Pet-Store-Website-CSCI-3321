@@ -29,10 +29,23 @@ const upload = multer({
     storage: storage
 });
 
-// Receives information to create a new product listing, including an image file
+// Receives information to create a new product listing, potentially including an image file
 router.post('/add', upload.single('image'), function(req, res) {
-    // filename = req.file.filename
-    // title = req.body.title
+    // Use default img unless image is supplied
+    let fileName = 'default_product_img.png';
+    if(req.file) {
+        fileName = req.file.filename;
+    }
+
+    // Insert new product listing into database
+    let sql = 'INSERT INTO Product (title, description, price, quantity, img_filename) VALUES (?, ?, ?, ?, ?)';
+    db.query(sql, [req.body.title, req.body.description, req.body.price, req.body.quantity, fileName], (err, result) => {
+        if (err) {
+            return res.json({ dbResult: err, message: "One or more of your entries is invalid."});
+        } else {
+            return res.json({ dbResult: result, message: "Product listing added successfully" });
+        }
+    });
 });
 
 module.exports = router;

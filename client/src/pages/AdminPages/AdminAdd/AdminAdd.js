@@ -29,7 +29,8 @@ function AdminAdd() {
         axios.post('http://localhost:9000/admin/add', formData)
             .then(res => {
                 // handle response
-                console.log(res);
+                console.log(res.data.dbResult);
+                alert(res.data.message)
             })
             .catch(err => console.log(err));
     }
@@ -56,7 +57,7 @@ function AdminAdd() {
                     onChange={e => setAddValues({ ...addValues, quantity: e.target.value })}></input>
 
                 <label htmlFor="image">Image:</label>
-                <input id="image" type="file" required="required" accept="image/png, image/jpeg"
+                <input id="image" type="file" accept="image/png, image/jpeg"
                     onChange={e => setAddValues({ ...addValues, image: e.target.files[0] })}></input>
 
                 <input type="submit" value="Submit"></input>
