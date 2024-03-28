@@ -101,7 +101,7 @@ function CartPage({}) {
             <div id="cart-sections">
                 <div id="cart-description" style={{width: window.innerWidth / 2}}>
                     <div id="cart-desc-header">
-                        <IconText icon="cart" text="Cart" size={20}/>
+                        <IconText icon="cart" text="Cart Items" size={25}/>
                     </div>
                     <div className="fake-hr"></div>
                     <div id="items">
@@ -111,7 +111,26 @@ function CartPage({}) {
                     </div>
                 </div>
                 <div id="checkout">
-                    Checkout
+                    <div id="transaction-info">
+                        <div id="subtotal">
+                            <div id="sub-name">Subtotal:</div>
+                            <div id="sub-amt">Field Value</div>
+                        </div>
+                        <div id="tax">
+                            <div id="tax-name">Tax:</div>
+                            <div id="tax-amt">Field Value</div>
+                        </div>
+                        <div id="total">Total:</div>
+                    </div>
+                    <form id="checkout-form">
+                        <div id="card-info">
+                            <input type="text" className="checkout-input-sm" placeholder="Card Exp. Date" required="required"></input>
+                            <input type="text" className="checkout-input-sm" placeholder="CVV" required="required"></input>
+                        </div>
+                        <input type="text" className="checkout-input" placeholder="Credit Card #" required="required"></input>
+                        <input type="text" className="checkout-input" placeholder="Address, Zip, City, State" required="required"></input>
+                        <input type="submit" id="checkout-button" value="Purchase"></input>
+                    </form>
                 </div>
             </div>
         </div>
