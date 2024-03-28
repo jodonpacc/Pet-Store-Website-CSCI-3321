@@ -7,6 +7,7 @@ var logger = require('morgan');
 var app = express();
 const product = require('./routes/product.js');
 const account = require('./routes/account.js');
+const cart = require('./routes/cart.js');
 
 //for cross origin resource sharing (to share with React)???
 const cors = require('cors');
@@ -18,7 +19,9 @@ app.get('/', (req, res) => {
 
 app.use('/account', account);
 
-app.use('/product', product)
+app.use('/product', product);
+
+app.use('/cartapi', cart)
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
