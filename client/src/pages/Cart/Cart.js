@@ -92,7 +92,7 @@ function CartPage({}) {
             }
         })
     }
-
+ 
     return (
         <div id="cart-page">
             <NavigationBar/>

@@ -48,7 +48,7 @@ function ProductView(productID) {
     //         console.log("can't find product")
     //         return (<><p>NEED TO MAKE ERROR PAGE</p></>);
     //     });
-}
+} 
 
 function PlaceholderPage({id}) {
     // Fetch product info from backend in the form of:
