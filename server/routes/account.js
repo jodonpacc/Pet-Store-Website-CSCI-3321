@@ -63,16 +63,16 @@ router.post("/logout", function(req, res) {
     return res.json("Successfully logged out.");
 });
 
-// Same as authenticateUser function below but for frontend access
+// Created this as frontend access but we shouldn't actually need it
 // Returns: message: status of authentication and status: (was user successfully authenticated)
-router.post("/authenticate", function(req, res) {
-    authenticateUser(req.body.username, req.body.password, (err, succ, mess, adm) => {
-        if(err) {
-            return res.json(err);
-        }
-        return res.json({ message: mess, success: succ, is_admin: adm });
-    });
-});
+// router.post("/authenticate", function(req, res) {
+//     authenticateUser(req.body.username, req.body.password, (err, succ, mess, adm) => {
+//         if(err) {
+//             return res.json(err);
+//         }
+//         return res.json({ message: mess, success: succ, is_admin: adm });
+//     });
+// });
 
 // Takes a username and password and confirms they match/exist
 // callback(error, bool success, string statusMessage, bool isAdmin)

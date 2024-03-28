@@ -10,13 +10,12 @@ function AdminAdd() {
         description: '',
         price: '',
         quantity: '',
+        password: '',
         image: undefined
     });
 
     const addListing = (e) => {
         e.preventDefault();
-
-        // Confirm the user's admin priveledges
 
         // Create FormData object that contains all the form entries
         // (have to use FormData here in order to send the image file information correctly)
@@ -25,6 +24,7 @@ function AdminAdd() {
         formData.append("description", addValues.description);
         formData.append("price", addValues.price);
         formData.append("quantity", addValues.quantity);
+        formData.append("password", addValues.password);
         formData.append("image", addValues.image);
 
         // Send form data to backend to add a new product listing
@@ -61,6 +61,10 @@ function AdminAdd() {
                 <label htmlFor="image">Image:</label>
                 <input id="image" type="file" accept="image/png, image/jpeg"
                     onChange={e => setAddValues({ ...addValues, image: e.target.files[0] })}></input>
+
+                <label htmlFor="password">Password:*</label>
+                <input id="password" type="password" required="required" minLength="8" maxLength="20" 
+                    onChange={e => setAddValues({ ...addValues, password: e.target.value })}></input>
 
                 <input type="submit" value="Submit"></input>
             </form>

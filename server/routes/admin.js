@@ -31,6 +31,8 @@ const upload = multer({
 
 // Receives information to create a new product listing, potentially including an image file
 router.post('/add', upload.single('image'), function(req, res) {
+    // Authenticate user as admin, sending req.session.username as username and req.body.password as password
+    
     // Use default img unless image is supplied
     let fileName = 'default_product_img.png';
     if(req.file) {
