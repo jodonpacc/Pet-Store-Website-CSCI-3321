@@ -108,28 +108,53 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr;
+    justify-items: center;
 }
 
 #card-info {
     display: flex;
-    flex-direction: row;
+    justify-content: space-between;
+    width: 365px;
+}
+
+.checkout-input-sm {
+    max-width: 150px;
 }
 
 .checkout-input, .checkout-input-sm {
+    height: 30px;
+    width: 365px;
     border-radius: 30px;
     border: none;
+    margin-bottom: 30px;
     background-color: #2D3142;
     color: #FFFFFF;
     font-size: large;
-    height: 30px;
     text-align: center;
 }
 
+.checkout-input::placeholder, .checkout-input-sm::placeholder {
+    color: #FFFFFF;
+}
+
+.checkout-input:focus, .checkout-input-sm:focus {
+    outline-style: solid;
+    outline-color: #EF8354;
+    outline-width: 3px;
+}
+
 #checkout-button {
+    width: 365px;
     border-radius: 30px;
     border: none;
     background-color: #EF8354;
     color: #2D3142;
     font-size: x-large;
     font-weight: bolder;
+}
+
+#checkout-button:focus {
+    outline-style: solid;
+    outline-color: #2D3142;
+    outline-width: 3px;
 }
