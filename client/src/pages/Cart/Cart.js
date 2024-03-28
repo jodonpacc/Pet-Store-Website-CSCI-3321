@@ -3,11 +3,18 @@ import IconText from "../../components/IconText";
 import {React, useEffect, useState} from 'react';
 import './Cart.css'
 
+const fakeItem = {
+    itemID: 69,
+    itemName: "Fake Cat Food",
+    quantity: 397,
+    price: 51.5,
+}
+
 function CartItem({id, name, quantity, price, deleteSelf}) {
     const [itemCount, setItemCount] = useState(quantity)
 
     const updateQuantity = (e) => {
-        if (e.target.value === 0) {
+        if (parseInt(e.target.value) === 0) {
             fetch("adjustQuantity?itemID=" + id + "&newQuantity=" + e.target.value) //handle bad inputs at some point. 
             // Still need to call this so backend deletes it. Probably hackable lol
             deleteSelf()
@@ -18,10 +25,10 @@ function CartItem({id, name, quantity, price, deleteSelf}) {
     }
 
     return (
-        <div className="cart-item" id={id}>
+        <div className="cart-item">
             <div className="item-fields">
                 <div className="prod-name">{name}</div>
-                <input className="quantity" value={quantity} onChange={updateQuantity}>x{quantity}</input>
+                x<input className="quantity" type="number" value={itemCount} onChange={updateQuantity}></input>
                 <div className="price">${price}</div>
             </div>
             <div className="fake-hr"></div>
@@ -48,26 +55,21 @@ function CartPage({}) {
         price:
     } ]
     */
-    const [cartItems, setCartItems] = useState(fetch('cartItems').then(data => {
-        if (data) {
-            return data
-        }
-        console.log("Failed to fetch cart items")
-        return null
-    }))
+    const [cartItems, setCartItems] = useState([fakeItem, fakeItem])
 
-    // placeholder
     useEffect(() => {
-        setCartItems(["Cat food", "Catnip"])
+        fetch('cartItems').then(data => {
+            if (data) {
+                setCartItems(data)
+            }
+            console.log("Failed to fetch cart items")
+            setCartItems([fakeItem, fakeItem])
+        })
     }, [])
 
     // Deletes an item. Called when quantity is edited to zero
     const deleteItem = (id) => {
-        setCartItems((items) => {
-            items.filter(item => {
-                return (item.itemID !== id) 
-            })
-        })
+        setCartItems((items) => items.filter(item => item.itemID !== id))
     }
 
     /*
@@ -103,9 +105,9 @@ function CartPage({}) {
                     </div>
                     <div className="fake-hr"></div>
                     <div id="items">
-                        {cartItems.map(item => {
-                            <CartItem id={item.itemID} name={item.name} price={item.price} quantity={item.quantity} deleteSelf={() => deleteItem(item.itemID)}/>
-                        })}
+                        {cartItems.map((item, idx) => (
+                            <CartItem key={idx} id={item.itemID} name={item.itemName} price={item.price} quantity={item.quantity} deleteSelf={() => deleteItem(item.itemID)}/>
+                        ))}
                     </div>
                 </div>
                 <div id="checkout">
