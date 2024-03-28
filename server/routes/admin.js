@@ -48,4 +48,14 @@ router.post('/add', upload.single('image'), function(req, res) {
     });
 });
 
+// Receives a product id to remove from the database
+router.post('/remove', function(req, res) {
+    
+});
+
+// Receives a product id and information to edit the attributes of the listing in the database
+router.post('/edit', function(req, res) {
+
+});
+
 module.exports = router;

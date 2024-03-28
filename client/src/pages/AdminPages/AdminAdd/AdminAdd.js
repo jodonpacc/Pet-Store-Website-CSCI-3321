@@ -16,6 +16,8 @@ function AdminAdd() {
     const addListing = (e) => {
         e.preventDefault();
 
+        // Confirm the user's admin priveledges
+
         // Create FormData object that contains all the form entries
         // (have to use FormData here in order to send the image file information correctly)
         const formData = new FormData();

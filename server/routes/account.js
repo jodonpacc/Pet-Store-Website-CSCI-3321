@@ -19,25 +19,16 @@ router.get("/", function (req, res) {
 
 // Receiving a username and password for logging in
 router.post("/login", function (req, res) {
-    let sql = "SELECT password, is_admin FROM User WHERE user_name = ?";
-    db.query(sql, [req.body.username], (err, result) => {
-        if (err) return res.json(err);
-
-        if (result.length > 0) {
-            // check pass
-            if (req.body.password === result[0].password) {
-                // login
-                req.session.username = req.body.username;
-                req.session.is_admin = result[0].is_admin;
-                return res.json({ message: "Successfully logged in as " + req.body.username + ".", success: true });
-            } else {
-                // user entered the wrong password
-                return res.json({ message: "The given password is incorrect.", success: false });
-            }
-        } else {
-            // there is no account with the given username
-            return res.json({ message: "There is no account with the given username.", success: false });
+    authenticateUser(req.body.username, req.body.password, (err, succ, mess, adm) => {
+        if(err) {
+            return res.json(err);
         }
+
+        if(succ) {
+            req.session.username = req.body.username;
+            req.session.is_admin = adm;
+        }
+        return res.json({ message: mess, success: succ });
     });
 });
 
@@ -71,5 +62,41 @@ router.post("/logout", function(req, res) {
     req.session.is_admin = false;
     return res.json("Successfully logged out.");
 });
+
+// Same as authenticateUser function below but for frontend access
+// Returns: message: status of authentication and status: (was user successfully authenticated)
+router.post("/authenticate", function(req, res) {
+    authenticateUser(req.body.username, req.body.password, (err, succ, mess, adm) => {
+        if(err) {
+            return res.json(err);
+        }
+        return res.json({ message: mess, success: succ, is_admin: adm });
+    });
+});
+
+// Takes a username and password and confirms they match/exist
+// callback(error, bool success, string statusMessage, bool isAdmin)
+const authenticateUser = (error, username, password, callback) => {
+    let sql = "SELECT password, is_admin FROM User WHERE user_name = ?";
+    db.query(sql, [username], (err, result) => {
+        if (err) {
+            callback(err, false, "Error encountered.", false);
+        }
+
+        if (result.length > 0) {
+            // check pass
+            if (password === result[0].password) {
+                // username and password are correct
+                callback(null, true, "Successfully authenticated.", result[0].is_admin);
+            } else {
+                // user entered the wrong password
+                callback(null, false, "The given password is incorrect.", false);
+            }
+        } else {
+            // there is no account with the given username
+            callback(null, false, "There is no account with the given username.", false);
+        }
+    });
+}
 
 module.exports = router;
