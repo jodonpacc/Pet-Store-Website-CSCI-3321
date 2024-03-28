@@ -8,6 +8,31 @@ router.use(sess);
 
 router.use(express.json());
 
+// Takes a username and password and confirms they match/exist
+// callback(error, bool success, string statusMessage, bool isAdmin)
+const authenticateUser = (username, password, callback) => {
+    let sql = "SELECT password, is_admin FROM User WHERE user_name = ?";
+    db.query(sql, [username], (err, result) => {
+        if (err) {
+            callback(err, false, "Error encountered.", false);
+        }
+
+        if (result.length > 0) {
+            // check pass
+            if (password === result[0].password) {
+                // username and password are correct
+                callback(null, true, "Successfully authenticated as " + username + ".", result[0].is_admin);
+            } else {
+                // user entered the wrong password
+                callback(null, false, "The given password is incorrect.", false);
+            }
+        } else {
+            // there is no account with the given username
+            callback(null, false, "There is no account with the given username.", false);
+        }
+    });
+}
+
 // Requested from frontend and returns username and is_admin from session
 router.get("/", function (req, res) {
     if(req.session.username && req.session.username.length >= 5) {
@@ -74,29 +99,7 @@ router.post("/logout", function(req, res) {
 //     });
 // });
 
-// Takes a username and password and confirms they match/exist
-// callback(error, bool success, string statusMessage, bool isAdmin)
-const authenticateUser = (error, username, password, callback) => {
-    let sql = "SELECT password, is_admin FROM User WHERE user_name = ?";
-    db.query(sql, [username], (err, result) => {
-        if (err) {
-            callback(err, false, "Error encountered.", false);
-        }
-
-        if (result.length > 0) {
-            // check pass
-            if (password === result[0].password) {
-                // username and password are correct
-                callback(null, true, "Successfully authenticated.", result[0].is_admin);
-            } else {
-                // user entered the wrong password
-                callback(null, false, "The given password is incorrect.", false);
-            }
-        } else {
-            // there is no account with the given username
-            callback(null, false, "There is no account with the given username.", false);
-        }
-    });
+module.exports = {
+    accountRouter: router,
+    authUser: authenticateUser
 }
-
-module.exports = router;

@@ -31,8 +31,8 @@ function AdminAdd() {
         axios.post('http://localhost:9000/admin/add', formData)
             .then(res => {
                 // handle response
-                console.log(res.data.dbResult);
-                alert(res.data.message)
+                console.log("Database result: " + res.data.dbResult);
+                alert(res.data.message);
             })
             .catch(err => console.log(err));
     }

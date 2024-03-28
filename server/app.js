@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var app = express();
 const product = require('./routes/product.js');
-const account = require('./routes/account.js');
+const account = require('./routes/account.js').accountRouter;
 const admin = require('./routes/admin.js');
 
 // These two lines should be on any file that needs to manage the session
