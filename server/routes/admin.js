@@ -68,12 +68,46 @@ router.post('/add', upload.single('image'), function(req, res) {
 
 // Receives a product id to remove from the database
 router.post('/remove', function(req, res) {
-    
+    // Authenticate user as admin, sending req.session.username as username and req.body.password as password
+    authenticateUser(req.session.username, req.body.password, (err, succ, mess, adm) => {
+        if(err) {
+            return res.json(err);
+        }
+
+        if(succ && adm) {
+            // Edit produt listing
+        } else {
+            let denyMessage = "Access Denied: ";
+            if(succ) {
+                denyMessage += "You must be logged into an administrator account.";
+            } else {
+                denyMessage += mess;
+            }
+            return res.json({ message: denyMessage });
+        }
+    });
 });
 
 // Receives a product id and information to edit the attributes of the listing in the database
 router.post('/edit', function(req, res) {
+    // Authenticate user as admin, sending req.session.username as username and req.body.password as password
+    authenticateUser(req.session.username, req.body.password, (err, succ, mess, adm) => {
+        if(err) {
+            return res.json(err);
+        }
 
+        if(succ && adm) {
+            // Remove product listing
+        } else {
+            let denyMessage = "Access Denied: ";
+            if(succ) {
+                denyMessage += "You must be logged into an administrator account.";
+            } else {
+                denyMessage += mess;
+            }
+            return res.json({ message: denyMessage });
+        }
+    });
 });
 
 module.exports = router;
