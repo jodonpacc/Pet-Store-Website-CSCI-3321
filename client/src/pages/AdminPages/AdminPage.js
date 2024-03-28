@@ -1,4 +1,8 @@
+import axios from 'axios';
+
 function AdminPage() {
+    axios.defaults.withCredentials = true;
+
     const gotoAdminPage = (page) => {
         window.location.href = "/admin/" + page;
     };

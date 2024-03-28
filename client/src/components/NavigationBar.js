@@ -37,7 +37,7 @@ function NavigationBar() {
                 setUserInfo({isLoggedIn: false, isAdmin: false});
                 
                 // Redirect to the Login page?
-                //window.location.href = "/Login";
+                window.location.href = "/Login";
             })
             .catch(err => console.log(err));
     }

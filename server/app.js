@@ -6,6 +6,7 @@ var logger = require('morgan');
 var app = express();
 const product = require('./routes/product.js');
 const account = require('./routes/account.js');
+const admin = require('./routes/admin.js');
 
 // These two lines should be on any file that needs to manage the session
 const sess = require('./session.js').sessionSetup;
@@ -28,6 +29,9 @@ app.use('/account', account);
 
 // Use product.js route in ./routes for /product
 app.use('/product', product);
+
+// Use admin.js route in ./routes for /admin
+app.use('/admin', admin)
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
