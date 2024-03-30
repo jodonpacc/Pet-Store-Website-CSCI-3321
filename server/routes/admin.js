@@ -75,7 +75,15 @@ router.post('/remove', function(req, res) {
         }
 
         if(succ && adm) {
-            // Edit produt listing
+            // Remove product listing
+            let sql = '';
+            db.query(sql, [req.body.prod_id], (err, result) => {
+                if (err) {
+                    return res.json({ dbResult: err, message: "One or more of your entries is invalid.", success: false });
+                } else {
+                    return res.json({ dbResult: result, message: "Product listing added successfully", success: true });
+                }
+            });
         } else {
             let denyMessage = "Access Denied: ";
             if(succ) {
@@ -83,7 +91,7 @@ router.post('/remove', function(req, res) {
             } else {
                 denyMessage += mess;
             }
-            return res.json({ message: denyMessage });
+            return res.json({ message: denyMessage, succes: false });
         }
     });
 });
@@ -97,7 +105,7 @@ router.post('/edit', function(req, res) {
         }
 
         if(succ && adm) {
-            // Remove product listing
+            // Edit product listing
         } else {
             let denyMessage = "Access Denied: ";
             if(succ) {
