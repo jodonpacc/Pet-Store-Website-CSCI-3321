@@ -11,7 +11,7 @@ function Product({id, name, description, quantity, price, img, openDialog}) {
             <div>Description {description}</div>
             <div>Quantity {quantity}</div>
             <div>Price {price}</div>
-            <img src={'./src/assets/images/' + img} width="100" height="100"></img>
+            <img src={'/assets/images/' + img} width="100" height="100"></img>
             <button onClick={openDialog}>Remove</button>
         </li>
     )
