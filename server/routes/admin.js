@@ -76,12 +76,12 @@ router.post('/remove', function(req, res) {
 
         if(succ && adm) {
             // Remove product listing
-            let sql = '';
+            let sql = 'DELETE FROM Product WHERE product_id = ?';
             db.query(sql, [req.body.prod_id], (err, result) => {
                 if (err) {
-                    return res.json({ dbResult: err, message: "One or more of your entries is invalid.", success: false });
+                    return res.json({ dbResult: err, message: "There was an unexpected error.", success: false });
                 } else {
-                    return res.json({ dbResult: result, message: "Product listing added successfully", success: true });
+                    return res.json({ dbResult: result, message: "Product listing removed successfully", success: true });
                 }
             });
         } else {

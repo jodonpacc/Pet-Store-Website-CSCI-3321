@@ -11,7 +11,7 @@ function Product({id, name, description, quantity, price, img, openDialog}) {
             <div>Description {description}</div>
             <div>Quantity {quantity}</div>
             <div>Price {price}</div>
-            <img src={'../../../assets/images/' + img} width="100" height="100"></img>
+            <img src={'./src/assets/images/' + img} width="100" height="100"></img>
             <button onClick={openDialog}>Remove</button>
         </li>
     )
@@ -20,7 +20,7 @@ function Product({id, name, description, quantity, price, img, openDialog}) {
 function AdminRemove() {
     axios.defaults.withCredentials = true;
 
-    const [products, setProducts] = useState([])
+    const [products, setProducts] = useState([]);
     const [isOpen, setOpen] = useState(false);
     const [popupInfo, setPopupInfo] = useState({
         prod_id: 0,
@@ -53,7 +53,7 @@ function AdminRemove() {
                 // handle response
                 // If remove was successful in backend, remove item from view
                 if(res.data.success) {
-                    setProducts((items) => items.filter(item => item.itemID !== popupInfo.prod_id));
+                    setProducts(products.filter((item) => item.product_id !== popupInfo.prod_id));
                     setOpen(false);
                 }
                 console.log("Database result: " + res.data.dbResult);
@@ -68,7 +68,7 @@ function AdminRemove() {
             <ul>
                 {products.map((item, idx) => (
                     <Product key={idx} id={item.product_id} name={item.title} description={item.description} price={item.price} 
-                    quantity={item.quantity} img={item.img} openDialog={() => promptPassword(item.product_id)}/>
+                    quantity={item.quantity} img={item.img_filename} openDialog={() => promptPassword(item.product_id)}/>
                 ))}
             </ul>
 
