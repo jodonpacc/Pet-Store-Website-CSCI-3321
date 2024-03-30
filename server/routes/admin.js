@@ -49,9 +49,9 @@ router.post('/add', upload.single('image'), function(req, res) {
             let sql = 'INSERT INTO Product (title, description, price, quantity, img_filename) VALUES (?, ?, ?, ?, ?)';
             db.query(sql, [req.body.title, req.body.description, req.body.price, req.body.quantity, fileName], (err, result) => {
                 if (err) {
-                    return res.json({ dbResult: err, message: "One or more of your entries is invalid."});
+                    return res.json({ dbResult: err, message: "One or more of your entries is invalid.", success: false });
                 } else {
-                    return res.json({ dbResult: result, message: "Product listing added successfully" });
+                    return res.json({ dbResult: result, message: "Product listing added successfully", success: true });
                 }
             });
         } else {
@@ -61,7 +61,7 @@ router.post('/add', upload.single('image'), function(req, res) {
             } else {
                 denyMessage += mess;
             }
-            return res.json({ message: denyMessage });
+            return res.json({ message: denyMessage, success: false });
         }
     });
 });

@@ -1,5 +1,6 @@
 import { React, useState } from 'react';
 import axios from 'axios';
+import Popup from '../../../components/Popup';
 
 function AdminAdd() {
     axios.defaults.withCredentials = true;
@@ -13,6 +14,13 @@ function AdminAdd() {
         password: '',
         image: undefined
     });
+    
+    // Handles dialog box that prompts for administrator password
+    const [isOpen, setOpen] = useState(false);
+    const openDialog = (e) => {
+        e.preventDefault();
+        setOpen(true);
+    }
 
     const addListing = (e) => {
         e.preventDefault();
@@ -31,6 +39,9 @@ function AdminAdd() {
         axios.post('http://localhost:9000/admin/add', formData)
             .then(res => {
                 // handle response
+                if(res.data.success) {
+                    setOpen(false);
+                }
                 console.log("Database result: " + res.data.dbResult);
                 alert(res.data.message);
             })
@@ -41,7 +52,7 @@ function AdminAdd() {
         <div>
             <h1>Admin Add Product Listing Page</h1>
             {/* Fields to keep track of - Title, Description, Price, Quantity, Image filename. Rating defaults to 0 so is left out */}
-            <form onSubmit={addListing}>
+            <form onSubmit={openDialog}>
                 <label htmlFor="title">Title:*</label>
                 <input id="title" type="text" required="required" minLength="5" maxLength="50" 
                     onChange={e => setAddValues({ ...addValues, title: e.target.value })}></input>
@@ -62,12 +73,19 @@ function AdminAdd() {
                 <input id="image" type="file" accept="image/png, image/jpeg"
                     onChange={e => setAddValues({ ...addValues, image: e.target.files[0] })}></input>
 
-                <label htmlFor="password">Password:*</label>
-                <input id="password" type="password" required="required" minLength="8" maxLength="20" 
-                    onChange={e => setAddValues({ ...addValues, password: e.target.value })}></input>
-
                 <input type="submit" value="Submit"></input>
             </form>
+
+            <Popup isOpen={isOpen} setOpen={setOpen}>
+                <p>Are you sure you want to add this product listing? Please enter your administrator password to confirm.</p>
+                <form onSubmit={addListing}>
+                    <label htmlFor="password">Password:*</label>
+                    <input id="password" type="password" required="required" minLength="8" maxLength="20" 
+                        onChange={e => setAddValues({ ...addValues, password: e.target.value })}></input>
+
+                    <input type="submit" value="Confirm"></input>
+                </form>
+            </Popup>
         </div>
     );
 }
