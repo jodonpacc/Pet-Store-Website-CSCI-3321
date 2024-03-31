@@ -1,7 +1,8 @@
 import NavigationBar from "../../components/NavigationBar";
 import IconText from "../../components/IconText";
 import {React, useEffect, useState} from 'react';
-import './Cart.css'
+import './Cart.css';
+import axios from 'axios';
 
 const fakeItem = {
     itemID: 69,
@@ -37,6 +38,9 @@ function CartItem({id, name, quantity, price, deleteSelf}) {
 }
 
 function CartPage({}) {
+    // This line must be present on every main page so that session information is circulated properly
+    axios.defaults.withCredentials = true;
+
     const [checkoutData, setCheckoutData] = useState({
         firstName: "",
         lastName: "",

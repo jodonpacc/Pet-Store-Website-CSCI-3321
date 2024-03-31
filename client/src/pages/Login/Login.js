@@ -1,9 +1,13 @@
 import './Login.css';
-import React, { useState } from 'react';
+import { React, useState } from 'react';
 import axios from 'axios';
 
 function Login() {
     document.body.style.backgroundColor = '#2D3142'
+    
+    // This line must be present on every main page so that session information is circulated properly
+    axios.defaults.withCredentials = true;
+
     // Keeps track of the values the user has entered in the Log In fields
     const [loginValues, setLoginValues] = useState({
         username: '',
@@ -14,21 +18,13 @@ function Login() {
         e.preventDefault();
         axios.post('http://localhost:9000/account/login', loginValues)
             .then(res => {
-                // server sends back one of the following responses:
-                // "There is no account with the given username." + success: false
-                // "The given password is incorrect." + success: false
-                // "Successfully logged in as [username]." + success: true
-                // Display the returned message
-                console.log(res.data.message);
-                if (res.data.success) {
-                    // Do login stuff
-                    window.location.href = "/home"
-                    console.log("success");
+                // Server sends back status message, display it
+                alert(res.data.message);
 
-                    if (res.data.isAdmin) {
-                        // Do admin login stuff
-                        console.log("admin user logged in");
-                    }
+                // Server sends back a boolean success, indicating if login was successful
+                if (res.data.success) {
+                    // Redirect to home page
+                    window.location.href = "/home"
                 }
             })
             .catch(err => console.log(err));
@@ -46,10 +42,7 @@ function Login() {
         if (accountValues.password === accountValues.passwordConfirm) {
             axios.post('http://localhost:9000/account/create_account', accountValues)
                 .then(res => {
-                    // server sends back one of the following responses
-                    // "There is already an account associated with this username."
-                    // "Account [username] successfully created. You may now log in."
-                    // Display the returned message
+                    // Server sends back status message, display it
                     console.log(res.data);
                 })
                 .catch(err => console.log(err));

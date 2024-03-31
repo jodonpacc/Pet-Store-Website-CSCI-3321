@@ -8,6 +8,11 @@ import ErrorPage from './pages/Errorpage/Errorpage'
 import reportWebVitals from './reportWebVitals';
 import HomePage from './pages/Home/Home';
 import CartPage from './pages/Cart/Cart';
+import AdminPage from './pages/AdminPages/AdminPage';
+import AdminAdd from './pages/AdminPages/AdminAdd/AdminAdd';
+import AdminRemove from './pages/AdminPages/AdminRemove/AdminRemove';
+import AdminEdit from './pages/AdminPages/AdminEdit/AdminEdit';
+import EditProduct from './pages/AdminPages/AdminEdit/EditProduct';
 
 
 const router = createBrowserRouter([
@@ -31,6 +36,26 @@ const router = createBrowserRouter([
   {
     path: "Cart",
     element: <CartPage />,
+  },
+  {
+    path: "admin",
+    element: <AdminPage />,
+  },
+  {
+    path: "admin/add",
+    element: <AdminAdd />,
+  },
+  {
+    path: "admin/remove",
+    element: <AdminRemove />,
+  },
+  {
+    path: "admin/edit",
+    element: <AdminEdit />,
+  },
+  {
+    path: "admin/edit/:id",
+    element: <EditProduct />,
   },
 ]);
 

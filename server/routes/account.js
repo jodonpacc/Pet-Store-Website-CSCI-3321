@@ -1,29 +1,59 @@
-
 const express = require("express");
 const router = express.Router();
 const db = require("../db_connection.js").db_connection;
 
+// For session stuff
+const sess = require("../session.js").sessionSetup;
+router.use(sess);
+
 router.use(express.json());
 
-// Receiving a username and password for logging in
-router.post("/login", function (req, res) {
+// Takes a username and password and confirms they match/exist
+// callback(error, bool success, string statusMessage, bool isAdmin)
+const authenticateUser = (username, password, callback) => {
     let sql = "SELECT password, is_admin FROM User WHERE user_name = ?";
-    db.query(sql, [req.body.username], (err, result) => {
-        if (err) return res.json(err);
+    db.query(sql, [username], (err, result) => {
+        if (err) {
+            callback(err, false, "Error encountered.", false);
+        }
 
         if (result.length > 0) {
             // check pass
-            if (req.body.password === result[0].password) {
-                // login
-                return res.json({ message: "Successfully logged in as " + req.body.username + ".", success: true, isAdmin: result[0].is_admin == 1 });
+            if (password === result[0].password) {
+                // username and password are correct
+                callback(null, true, "Successfully authenticated as " + username + ".", result[0].is_admin);
             } else {
                 // user entered the wrong password
-                return res.json({ message: "The given password is incorrect.", success: false });
+                callback(null, false, "The given password is incorrect.", false);
             }
         } else {
             // there is no account with the given username
-            return res.json({ message: "There is no account with the given username.", success: false });
+            callback(null, false, "There is no account with the given username.", false);
         }
+    });
+}
+
+// Requested from frontend and returns username and is_admin from session
+router.get("/", function (req, res) {
+    if(req.session.username && req.session.username.length >= 5) {
+        return res.json({ valid: true, username: req.session.username, is_admin: req.session.is_admin });
+    } else {
+        return res.json({ valid: false });
+    }
+});
+
+// Receiving a username and password for logging in
+router.post("/login", function (req, res) {
+    authenticateUser(req.body.username, req.body.password, (err, succ, mess, adm) => {
+        if(err) {
+            return res.json(err);
+        }
+
+        if(succ) {
+            req.session.username = req.body.username;
+            req.session.is_admin = adm;
+        }
+        return res.json({ message: mess, success: succ });
     });
 });
 
@@ -38,7 +68,7 @@ router.post("/create_account", function (req, res) {
             // create account
             let sql2 = "INSERT INTO User (user_name, password, is_admin) VALUES (?, ?, false)";
             db.query(sql2, [req.body.username, req.body.password], (err2, result2) => {
-                if (err) {
+                if (err2) {
                     return res.json(err);
                 } else {
                     return res.json("Account " + req.body.username + " successfully created. You may now log in.");
@@ -51,4 +81,25 @@ router.post("/create_account", function (req, res) {
     });
 });
 
-module.exports = router;
+// Receiving request to log out the user
+router.post("/logout", function(req, res) {
+    req.session.username = '';
+    req.session.is_admin = false;
+    return res.json("Successfully logged out.");
+});
+
+// Created this as frontend access but we shouldn't actually need it
+// Returns: message: status of authentication and status: (was user successfully authenticated)
+// router.post("/authenticate", function(req, res) {
+//     authenticateUser(req.body.username, req.body.password, (err, succ, mess, adm) => {
+//         if(err) {
+//             return res.json(err);
+//         }
+//         return res.json({ message: mess, success: succ, is_admin: adm });
+//     });
+// });
+
+module.exports = {
+    accountRouter: router,
+    authUser: authenticateUser
+}

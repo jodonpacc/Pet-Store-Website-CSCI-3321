@@ -9,6 +9,9 @@ import { React, useState } from 'react';
 
 
 function ProductView(productID) {
+    // This line must be present on every main page so that session information is circulated properly
+    axios.defaults.withCredentials = true;
+
     return (<PlaceholderPage/>);
 
     // console.log("routing works");
