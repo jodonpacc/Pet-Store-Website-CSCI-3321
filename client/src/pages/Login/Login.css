@@ -70,3 +70,16 @@ body {
     border: none;
     margin: 0 auto;
 }
+
+.login-input:focus {
+    outline: solid;
+    outline-color: #EF8354;
+    outline-width: 5px;
+}
+
+.login-button:focus,
+.signup-button:focus {
+    outline: solid;
+    outline-color: #FFFFFF;
+    outline-width: 5px;
+}

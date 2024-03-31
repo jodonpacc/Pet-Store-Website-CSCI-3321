@@ -9,8 +9,9 @@
 }
 
 #cart-sections {
-    display: flex;
-    outline: 1px solid #2D3142;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    outline: 3px solid #2D3142;
     width: 100%;
     height: 100%;
 }
@@ -18,20 +19,22 @@
 #cart-description {
     height: 100%;
     width: 100%;
-    outline: 1px solid #2D3142;
+    outline: 3px solid #2D3142;
 }
 
 #cart-desc-header {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
     padding: 10px;
     font-weight: bold;
+    outline: 3px solid #2D3142;
 }
 
 .fake-hr {
-    width: 100%;
+    position: relative;
+    left: 16px;
+    width: 95%;
     height: 1px;
     background: #2D3142;
 }
@@ -44,7 +47,9 @@
 .item-fields {
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    width: 95%;
+    padding: 15px;
+    font-size: 20px;
 }
 
 .prod-name {
@@ -59,4 +64,98 @@
     height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+#checkout {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+}
+
+#transaction-info {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+#subtotal {
+    padding-top: 50px;
+}
+
+#tax {
+    padding-top: 20px;
+}
+
+#subtotal, #tax {
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+}
+
+#sub-name, #tax-name {
+    padding-right: 180px;
+    font-weight: bold;
+}
+
+#total {
+    font-size: 30px;
+    font-weight: bolder;
+}
+
+#checkout-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+    justify-items: center;
+}
+
+#card-info {
+    display: flex;
+    justify-content: space-between;
+    width: 365px;
+}
+
+.checkout-input-sm {
+    max-width: 150px;
+}
+
+.checkout-input, .checkout-input-sm {
+    height: 30px;
+    width: 365px;
+    border-radius: 30px;
+    border: none;
+    margin-bottom: 30px;
+    background-color: #2D3142;
+    color: #FFFFFF;
+    font-size: large;
+    text-align: center;
+}
+
+.checkout-input::placeholder, .checkout-input-sm::placeholder {
+    color: #FFFFFF;
+}
+
+.checkout-input:focus, .checkout-input-sm:focus {
+    outline-style: solid;
+    outline-color: #EF8354;
+    outline-width: 3px;
+}
+
+#checkout-button {
+    width: 365px;
+    border-radius: 30px;
+    border: none;
+    margin-bottom: 3px;
+    background-color: #EF8354;
+    color: #2D3142;
+    font-size: x-large;
+    font-weight: bolder;
+}
+
+#checkout-button:focus {
+    outline-style: solid;
+    outline-color: #2D3142;
+    outline-width: 3px;
 }

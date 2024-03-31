@@ -7,6 +7,8 @@ var app = express();
 const product = require('./routes/product.js').productRouter;
 const account = require('./routes/account.js').accountRouter;
 const admin = require('./routes/admin.js');
+const cart = require('./routes/cart.js');
+const home = require('./routes/home.js');
 
 // These two lines should be on any file that needs to manage the session
 const sess = require('./session.js').sessionSetup;
@@ -27,11 +29,17 @@ app.get('/', (req, res) => {
 // Use account.js route in ./routes for /account
 app.use('/account', account);
 
+
 // Use product.js route in ./routes for /product
 app.use('/product', product);
 
 // Use admin.js route in ./routes for /admin
 app.use('/admin', admin)
+
+app.use('/cartapi', cart);
+
+app.use('/home', home);
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
