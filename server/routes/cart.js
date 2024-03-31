@@ -1,9 +1,18 @@
-
 const express = require("express");
 const router = express.Router();
 const db = require("../db_connection.js").db_connection;
+const cors = require('cors');
+
+// For session stuff
+const sess = require("../session.js").sessionSetup;
+router.use(sess);
 
 router.use(express.json());
+router.use(cors({
+    origin: ["http://localhost:3000"],
+    methods: ["POST", "GET"],
+    credentials: true
+}));
 
 /*
 Returns a list of Cart Items to display on the cart page. 
@@ -47,3 +56,4 @@ router.post('/checkout', (req, res) => {
     res.send([]);
 });
 
+module.exports = router;

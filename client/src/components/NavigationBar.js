@@ -51,7 +51,7 @@ function NavigationBar() {
                     {userInfo.isAdmin && <button id="admin-button" onClick={() => gotoPage('admin')}>Admin</button>}
                 </div>
                 <div id="right-items">
-                    <img src={CartIcon} onClick={() => gotoPage('Cart')} style={{width: 20, height: 20}}></img>
+                    <img src={CartIcon} onClick={() => gotoPage('Cart')} alt="Cart Icon" style={{width: 20, height: 20}}></img>
                     {userInfo.isLoggedIn
                         ? <button className="login-out-button" onClick={logOut}>Log Out</button>
                         : <button className="login-out-button" onClick={() => gotoPage('login')}>Log In</button>}

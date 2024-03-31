@@ -9,7 +9,7 @@ function AdminProduct({id, name, description, quantity, price, img, buttonFuncti
             <div>Description {description}</div>
             <div>Quantity {quantity}</div>
             <div>Price {price}</div>
-            <img src={'/assets/images/' + img} width="100" height="100"></img>
+            <img src={'/assets/images/' + img} alt={"Image of the " + name + " product."} width="100" height="100"></img>
             <button onClick={buttonFunction}>{buttonName}</button>
         </li>
     )

@@ -109,8 +109,9 @@ function EditProduct() {
                 <p>Description: {currentValues.description}</p>
                 <p>Price: {currentValues.price}</p>
                 <p>Quantity: {currentValues.quantity}</p>
-                <label htmlFor="original-image">Original Image:</label>
-                <img id="original-image" src={'/assets/images/' + currentValues.img_filename} width="100" height="100"></img>
+                <label htmlFor="current-image">Original Image:</label>
+                <img id="current-image" src={'/assets/images/' + currentValues.img_filename} alt={"Current image of the " + currentValues.title + " product."} 
+                    width="100" height="100"></img>
             </div>
 
             <Popup isOpen={isOpen} setOpen={setOpen}>
