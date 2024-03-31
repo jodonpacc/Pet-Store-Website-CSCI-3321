@@ -21,7 +21,7 @@ function HomePage({}) {
                 <div id="all-products-label">
                     All Products:
                 </div>
-                <div className="fake-hr"></div>
+                <div className="home-fake-hr"></div>
                 <div id="product-array">
                     <ProductCard title={"Product Card"} destination="/product"/>
                     <ProductCard title={"Product Card"} destination="/product"/>

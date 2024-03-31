@@ -1,6 +1,6 @@
 .fake-hr {
     width: 100%;
-    height: 1px;
+    height: 3px;
     background: #2D3142;
 }
 
@@ -20,6 +20,12 @@
     display: flex;
     gap: 15px;
     align-items: center;
+}
+
+#search-bar {
+    width: 250px;
+    height: 35px;
+    border-radius: 10px;
 }
 
 #admin-button {
@@ -44,5 +50,17 @@
 }
 
 .login-out-button {
-    /* Log In and Log Out button css here */
+    width: 120px;
+    height: 50px;
+    border-radius: 30px;
+    background-color: #2D3142;
+    color: #FFFFFF;
+    font-size: larger;
+    font-weight: bold;
+}
+
+.login-out-button:focus {
+    outline-style: solid;
+    outline-color: #EF8354;
+    outline-width: 3px;
 }

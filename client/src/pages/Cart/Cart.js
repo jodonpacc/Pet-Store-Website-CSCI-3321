@@ -32,7 +32,7 @@ function CartItem({id, name, quantity, price, deleteSelf}) {
                 x<input className="quantity" type="number" value={itemCount} onChange={updateQuantity}></input>
                 <div className="price">${price}</div>
             </div>
-            <div className="fake-hr"></div>
+            <div className="cart-fake-hr"></div>
         </div>
     )
 }
@@ -107,7 +107,7 @@ function CartPage({}) {
                     <div id="cart-desc-header">
                         <IconText icon="cart" text="Cart Items" size={25}/>
                     </div>
-                    <div className="fake-hr"></div>
+                    <div className="cart-fake-hr"></div>
                     <div id="items">
                         {cartItems.map((item, idx) => (
                             <CartItem key={idx} id={item.itemID} name={item.itemName} price={item.price} quantity={item.quantity} deleteSelf={() => deleteItem(item.itemID)}/>

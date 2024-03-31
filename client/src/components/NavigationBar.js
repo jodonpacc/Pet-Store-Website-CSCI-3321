@@ -47,11 +47,11 @@ function NavigationBar() {
             <div id="nav-sections"> 
                 <div id="left-items">
                     <div className="logo">PetSmarter</div>
-                    <input type="text" placeholder="Search..." maxLength="40"></input>
+                    <input type="text" id="search-bar" placeholder="Search..." maxLength="40"></input>
                     {userInfo.isAdmin && <button id="admin-button" onClick={() => gotoPage('admin')}>Admin</button>}
                 </div>
                 <div id="right-items">
-                    <img src={CartIcon} onClick={() => gotoPage('Cart')} alt="Cart Icon" style={{width: 20, height: 20}}></img>
+                    <img src={CartIcon} onClick={() => gotoPage('Cart')} alt="Cart Icon" style={{width: 40, height: 40}}></img>
                     {userInfo.isLoggedIn
                         ? <button className="login-out-button" onClick={logOut}>Log Out</button>
                         : <button className="login-out-button" onClick={() => gotoPage('login')}>Log In</button>}
