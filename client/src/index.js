@@ -12,6 +12,7 @@ import AdminPage from './pages/AdminPages/AdminPage';
 import AdminAdd from './pages/AdminPages/AdminAdd/AdminAdd';
 import AdminRemove from './pages/AdminPages/AdminRemove/AdminRemove';
 import AdminEdit from './pages/AdminPages/AdminEdit/AdminEdit';
+import EditProduct from './pages/AdminPages/AdminEdit/EditProduct';
 
 
 const router = createBrowserRouter([
@@ -51,6 +52,10 @@ const router = createBrowserRouter([
   {
     path: "admin/edit",
     element: <AdminEdit />,
+  },
+  {
+    path: "admin/edit/:id",
+    element: <EditProduct />,
   },
 ]);
 

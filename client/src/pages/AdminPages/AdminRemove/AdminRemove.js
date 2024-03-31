@@ -1,21 +1,7 @@
 import { React, useState, useEffect } from 'react';
 import axios from 'axios';
+import AdminProduct from '../../../components/AdminProduct';
 import Popup from '../../../components/Popup';
-
-function Product({id, name, description, quantity, price, img, openDialog}) {
-
-    return (
-        <li>
-            <div>Product ID: {id}</div>
-            <div>Title: {name}</div>
-            <div>Description {description}</div>
-            <div>Quantity {quantity}</div>
-            <div>Price {price}</div>
-            <img src={'/assets/images/' + img} width="100" height="100"></img>
-            <button onClick={openDialog}>Remove</button>
-        </li>
-    )
-}
 
 function AdminRemove() {
     axios.defaults.withCredentials = true;
@@ -67,8 +53,8 @@ function AdminRemove() {
             <h1>Admin Remove Product Listing Page</h1>
             <ul>
                 {products.map((item, idx) => (
-                    <Product key={idx} id={item.product_id} name={item.title} description={item.description} price={item.price} 
-                    quantity={item.quantity} img={item.img_filename} openDialog={() => promptPassword(item.product_id)}/>
+                    <AdminProduct key={idx} id={item.product_id} name={item.title} description={item.description} price={item.price} 
+                    quantity={item.quantity} img={item.img_filename} buttonFunction={() => promptPassword(item.product_id)} buttonName="Remove"/>
                 ))}
             </ul>
 
