@@ -97,7 +97,9 @@ router.post('/remove', function(req, res) {
                     if (err) {
                         return res.json({ dbResult: err, message: "There was an unexpected error.", success: false });
                     } else {
-                        removeFile(productInfo.img_filename);
+                        if(productInfo.img_filename.startsWith('prodimage')) {
+                            removeFile(productInfo.img_filename);
+                        }
                         return res.json({ dbResult: result, message: "Product listing removed successfully", success: true });
                     }
                 });
