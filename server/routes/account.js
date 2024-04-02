@@ -1,16 +1,22 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../db_connection.js").db_connection;
+const cors = require('cors');
 
 // For session stuff
 const sess = require("../session.js").sessionSetup;
 router.use(sess);
 
 router.use(express.json());
+router.use(cors({
+    origin: ["http://localhost:3000"],
+    methods: ["POST", "GET"],
+    credentials: true
+}));
 
 // Takes a username and password and confirms they match/exist
 // callback(error, bool success, string statusMessage, bool isAdmin)
-const authenticateUser = (username, password, callback) => {
+const authenticateUser = async (username, password, callback) => {
     let sql = "SELECT password, is_admin FROM User WHERE user_name = ?";
     db.query(sql, [username], (err, result) => {
         if (err) {
@@ -31,6 +37,27 @@ const authenticateUser = (username, password, callback) => {
             callback(null, false, "There is no account with the given username.", false);
         }
     });
+
+    // try {
+    //     let sql = "SELECT password, is_admin FROM User WHERE user_name = $1";
+    //     const psqlResult = await db.query(sql, [username]);
+    //     const result = psqlResult.rows;
+    //     if (result.length > 0) {
+    //         // check pass
+    //         if (password === result[0].password) {
+    //             // username and password are correct
+    //             callback(null, true, "Successfully authenticated as " + username + ".", result[0].is_admin);
+    //         } else {
+    //             // user entered the wrong password
+    //             callback(null, false, "The given password is incorrect.", false);
+    //         }
+    //     } else {
+    //         // there is no account with the given username
+    //         callback(null, false, "There is no account with the given username.", false);
+    //     }
+    // } catch(err) {
+    //     callback(err, false, "Error encountered.", false);
+    // }
 }
 
 // Requested from frontend and returns username and is_admin from session

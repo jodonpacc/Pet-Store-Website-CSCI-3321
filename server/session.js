@@ -1,4 +1,5 @@
 const session = require('express-session');
+require('dotenv').config();
 
 // Set up express-session for saving information to user session
 const sess = session({

@@ -20,6 +20,7 @@ function Login() {
             .then(res => {
                 // Server sends back status message, display it
                 alert(res.data.message);
+                console.log(res.data.message);
 
                 // Server sends back a boolean success, indicating if login was successful
                 if (res.data.success) {
