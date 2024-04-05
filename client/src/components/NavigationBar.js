@@ -1,5 +1,6 @@
 import "./NavigationBar.css"
 import CartIcon from "../assets/images/cart.png"
+import WrenchIcon from "../assets/images/wrenchIcon.png"
 import { React, useEffect, useState } from 'react';
 import { getUserInfo } from '../helperFunctionality/sessionInfo'
 import axios from 'axios';
@@ -48,7 +49,7 @@ function NavigationBar() {
                 <div id="left-items">
                     <div className="logo">PetSmarter</div>
                     <input type="text" id="search-bar" placeholder="Search..." maxLength="40"></input>
-                    {userInfo.isAdmin && <button id="admin-button" onClick={() => gotoPage('admin')}>Admin</button>}
+                    {userInfo.isAdmin && <button id="admin-button" onClick={() => gotoPage('admin')}><img id="admin-icon" src={WrenchIcon} alt="Wrench Icon"/> Admin</button>}
                 </div>
                 <div id="right-items">
                     <img src={CartIcon} onClick={() => gotoPage('Cart')} alt="Cart Icon" style={{width: 40, height: 40}}></img>
