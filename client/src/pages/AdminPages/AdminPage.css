@@ -1,0 +1,40 @@
+#admin-page-title {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+}
+
+#admin-functions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+#admin-function-group {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 0.2fr;
+    justify-items: center;
+}
+
+#admin-function-icon {
+    max-width: 250px;
+    max-height: 250px;
+}
+
+#add-page-button, #remove-page-button, #edit-page-button {
+    width: 200px;
+    height: 60px;
+    border: none;
+    border-radius: 30px;
+    margin-top: 30px;
+    background-color: #000000;
+    color: #ffffff;
+    font-size: x-large;
+    font-weight: bold;
+}
+
+#add-page-button:focus, #remove-page-button:focus, #edit-page-button:focus {
+    outline: solid;
+    outline-color: #EF8354;
+    outline-width: 5px;
+}

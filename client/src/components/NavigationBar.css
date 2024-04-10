@@ -29,7 +29,27 @@
 }
 
 #admin-button {
-    background-color: red;
+    width: 120px;
+    height: 50px;
+    border: none;
+    border-radius: 30px;
+    background-color: #EF8354;
+    padding-bottom: 8px;
+    font-size: larger;
+    font-weight: bold;
+}
+
+#admin-button:focus {
+    outline: solid;
+    outline-color: #2D3142;
+    outline-width: 3px;
+}
+
+#admin-icon {
+    width: 25px;
+    height: 25px;
+    position: relative;
+    top: 6px;
 }
 
 .logo {
@@ -52,6 +72,7 @@
 .login-out-button {
     width: 120px;
     height: 50px;
+    border: none;
     border-radius: 30px;
     background-color: #2D3142;
     color: #FFFFFF;
