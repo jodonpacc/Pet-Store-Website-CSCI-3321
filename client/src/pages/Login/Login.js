@@ -20,7 +20,7 @@ function Login() {
             .then(res => {
                 // Server sends back status message, display it
                 alert(res.data.message);
-                console.log(res.data.message);
+                console.log(res);
 
                 // Server sends back a boolean success, indicating if login was successful
                 if (res.data.success) {
@@ -44,7 +44,8 @@ function Login() {
             axios.post('http://localhost:9000/account/create_account', accountValues)
                 .then(res => {
                     // Server sends back status message, display it
-                    console.log(res.data);
+                    alert(res.data);
+                    console.log(res);
                 })
                 .catch(err => console.log(err));
         } else {

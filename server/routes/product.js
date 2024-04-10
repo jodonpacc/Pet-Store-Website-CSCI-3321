@@ -38,9 +38,20 @@ const product = (req, res) => {
     });
 };
 
-// Given a product id, returns all the values of that product from database
-// Seems like this function is in progress by someone else but to test
-// admin edit page I have to have it so I wrote this one
+/* Given a product id, returns all the values of that product from database
+   Seems like this function is in progress by someone else but to test
+   admin edit page I have to have it so I wrote this one
+takes in {
+    productID:
+}
+returns {
+    title:
+    description:
+    price:
+    img_filename:
+    rating:
+}
+*/
 const getProductInfo = (id, callback) => {
     let sql  = 'SELECT * FROM Product WHERE product_id = ?';
     db.query(sql, [id], (err, result) => {
@@ -49,6 +60,8 @@ const getProductInfo = (id, callback) => {
         }
         callback(null, result[0]);
     });
+
+    // here
 }
 
 // getProduct access for frontend, must pass a product_id, returns an object that may be empty!
@@ -81,6 +94,8 @@ router.get('/allProducts', function(req, res) {
             return res.json(result);
         }
     })
+
+    // here
 })
 
 /*

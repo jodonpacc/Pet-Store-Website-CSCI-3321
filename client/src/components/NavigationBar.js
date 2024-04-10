@@ -17,7 +17,7 @@ function NavigationBar() {
         getUserInfo((res) => {
             if(res.valid) {
                 // show log out button and admin button if admin
-                setUserInfo({isLoggedIn: true, isAdmin: res.is_admin === 1});
+                setUserInfo({isLoggedIn: true, isAdmin: res.is_admin});
             } else {
                 // show log in button
                 setUserInfo({isLoggedIn: false, isAdmin: false});
