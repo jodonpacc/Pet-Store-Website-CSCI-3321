@@ -26,9 +26,11 @@ function EditProduct() {
     function updateCurrentValues() {
         axios.post('http://localhost:9000/product', { prod_id: id })
             .then(res => {
-                if(res.data) {
+                if(res.data.product_id) {
                     setCurrentValues(res.data);
                     setProductExists(true);
+                } else {
+                    console.log(res);
                 }
             })
             .catch(err => console.log(err));
