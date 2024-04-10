@@ -3,6 +3,29 @@ const authenticateUser = require('./accountModel.js').authenticateUser;
 const getProductInfo = require('./productModel.js').getProductInfo;
 const fs = require('fs');
 
+/* Adds a new product listing to the database with provided info. 
+If no image is supplied, it uses default_product_img.png.
+Authenticates user and only executes successfully if authentication is successful and user is an admin.
+takes in {
+    username:
+    formData: {
+        title:
+        description:
+        price:
+        quantity:
+        rating:
+        password:
+    }
+    file: {
+        filename: (of uploaded image)
+    } 
+}
+callback takes in an object parameter with the following fields {
+    message: 
+    success: true/false
+    dbResult: (if exists)
+}
+*/
 function addListing(username, formData, file, callback) {
     // Authenticate user as admin, sending req.session.username as username and req.body.password as password
     authenticateUser(username, formData.password, (err, succ, mess, adm) => {
@@ -36,6 +59,19 @@ function addListing(username, formData, file, callback) {
     });
 }
 
+/* Removes an existing product listing to the database with provided info. 
+Authenticates user and only executes successfully if authentication is successful and user is an admin.
+takes in {
+    username:
+    password:
+    prod_id: product id to be removed
+}
+callback takes in an object parameter with the following fields {
+    message: 
+    success: true/false
+    dbResult: (if exists)
+}
+*/
 function removeListing(username, password, prod_id, callback) {
     // Authenticate user as admin, sending req.session.username as username and req.body.password as password
     authenticateUser(username, password, (err, succ, mess, adm) => {
@@ -71,6 +107,30 @@ function removeListing(username, password, prod_id, callback) {
     });
 }
 
+/* Edits an existing product listing in the database with provided info. 
+Some provided information is blank, only updates fields in database with the non-blank info provided.
+Authenticates user and only executes successfully if authentication is successful and user is an admin.
+takes in {
+    username:
+    formData: {
+        id:
+        title:
+        description:
+        price:
+        quantity:
+        rating:
+        password:
+    }
+    file: {
+        filename: (of uploaded image)
+    } 
+}
+callback takes in an object parameter with the following fields {
+    message: 
+    success: true/false
+    dbResult: (if exists)
+}
+*/
 function editListing(username, formData, file, callback) {
     // Authenticate user as admin, sending req.session.username as username and req.body.password as password
     authenticateUser(username, formData.password, (err, succ, mess, adm) => {
@@ -121,8 +181,10 @@ function editListing(username, formData, file, callback) {
     });
 }
 
-// Deletes uploaded image in case authentication is unsuccessful (ASSUMES IMAGE IS IN client/public/assets/images)
-// (If user submits an image and a wrong password, image will still be uploaded and needs to be removed)
+// Takes in a filename, deletes the image at client/public/assets/images/filename
+// Image is automatically uploaded in admin.js when a request with an image is received,
+// if the following function is unsuccessful, that image needs to be removed.
+// This function is also used when a product is removed, or edited to have a new image
 function removeFile(filename) {
     fs.unlink("../client/public/assets/images/" + filename, (err) => {
         if(err) {

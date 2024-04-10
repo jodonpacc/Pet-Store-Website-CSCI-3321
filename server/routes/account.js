@@ -35,7 +35,7 @@ router.post("/create_account", function (req, res) {
 
 // Receiving request to log out the user
 router.post("/logout", function(req, res) {
-    return res.json(accountModel.logout(req));
+    return res.json(accountModel.logout(req.session));
 });
 
 module.exports = router;

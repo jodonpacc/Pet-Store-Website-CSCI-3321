@@ -42,4 +42,4 @@ function checkout(orderInfo) {
 
 }
 
-modeule.exports = {getCartItems, adjustQuantity, checkout};
+module.exports = {getCartItems, adjustQuantity, checkout};
