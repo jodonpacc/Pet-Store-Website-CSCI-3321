@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../db_connection.js").db_connection;
 const cors = require('cors');
+const homeModel = require('../models/homeModel.js');
 
 // For session stuff
 const sess = require("../session.js").sessionSetup;

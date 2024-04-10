@@ -11,7 +11,11 @@ function AdminEdit() {
     useEffect(() => {
         axios.get('http://localhost:9000/product/allProducts')
             .then(res => {
-                setProducts(res.data);
+                if(Array.isArray(res.data)) {
+                    setProducts(res.data);
+                } else {
+                    console.log(res);
+                }
             })
             .catch(err => console.log(err));
     }, []);

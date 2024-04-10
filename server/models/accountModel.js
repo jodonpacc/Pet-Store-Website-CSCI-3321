@@ -10,7 +10,6 @@ function authenticateUser(username, password, callback) {
                 // check pass
                 if (password === result.rows[0].password) {
                     // username and password are correct
-                    console.log(result.rows[0].is_admin);
                     callback(null, true, "Successfully authenticated as " + username + ".", result.rows[0].is_admin);
                 } else {
                     // user entered the wrong password
@@ -22,7 +21,7 @@ function authenticateUser(username, password, callback) {
             }
         })
         .catch(err => {
-            callback(err, false, "Error encountered.", false);
+            callback(err, false, "The following error occurred while authenticating the user: " + err, false);
         });
 }
 
@@ -36,9 +35,7 @@ function getUserInfo(session) {
 
 function login(username, password, session, callback) {
     authenticateUser(username, password, (err, succ, mess, adm) => {
-        if(err) {
-            callback(err);
-        }
+        if(err) callback({ message: mess, success: false });
 
         if(succ) {
             session.username = username;

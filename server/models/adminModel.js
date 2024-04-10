@@ -1,154 +1,136 @@
-// const db = require("../db_connection.js").db_connection;
+const db = require("../db_connection.js").db_connection;
+const authenticateUser = require('./accountModel.js').authenticateUser;
+const getProductInfo = require('./productModel.js').getProductInfo;
+const fs = require('fs');
 
-// function addListing(username, formData, file) {
-//     // Authenticate user as admin, sending req.session.username as username and req.body.password as password
-//     authenticateUser(username, formData.password, async (err, succ, mess, adm) => {
-//         if(err) {
-//             // If file was submitted, undo it
-//             if(file) {
-//                 removeFile(file.filename);
-//             }
+function addListing(username, formData, file, callback) {
+    // Authenticate user as admin, sending req.session.username as username and req.body.password as password
+    authenticateUser(username, formData.password, (err, succ, mess, adm) => {
+        if(err) callback({ message: mess, success: false });
 
-//             return err;
-//         }
+        if(succ && adm) {
+            // Use default img unless image is supplied
+            let fileName = 'default_product_img.png';
+            if(file) {
+                fileName = file.filename;
+            }
 
-//         if(succ && adm) {
-//             // Use default img unless image is supplied
-//             let fileName = 'default_product_img.png';
-//             if(file) {
-//                 fileName = file.filename;
-//             }
+            // Insert new product listing into database
+            let sql = 'INSERT INTO Product (title, description, price, quantity, img_filename) VALUES ($1, $2, $3, $4, $5)';
+            db.query(sql, [formData.title, formData.description, formData.price, formData.quantity, fileName])
+                .then(result => {
+                    callback({ message: "Product listing added successfully", success: true, dbResult: result });
+                })
+                .catch(err2 => {
+                    callback({ message: "One or more of your entries is invalid.", success: false, dbResult: err2 });
+                });
+        } else {
+            let denyMessage = "Access Denied: ";
+            if(succ) {
+                denyMessage += "You must be logged into an administrator account.";
+            } else {
+                denyMessage += mess;
+            }
+            callback({ message: denyMessage, success: false });
+        }
+    });
+}
 
-//             // Insert new product listing into database
-//             try {
-//                 let sql = 'INSERT INTO Product (title, description, price, quantity, img_filename) VALUES ($1, $2, $3, $4, $5)';
-//                 const result = await db.query(sql, [formData.title, formData.description, formData.price, formData.quantity, fileName]).rows;
-//                 return { message: "Product listing added successfully", success: true, dbResult: result };
-//             }
-//             catch(err2) {
-//                 return { message: "One or more of your entries is invalid.", success: false, dbResult: err2 };
-//             }
-//         } else {
-//             // If file was submitted, undo it
-//             if(file) {
-//                 removeFile(file.filename);
-//             }
+function removeListing(username, password, prod_id, callback) {
+    // Authenticate user as admin, sending req.session.username as username and req.body.password as password
+    authenticateUser(username, password, (err, succ, mess, adm) => {
+        if(err) callback({ message: mess, success: false });
 
-//             let denyMessage = "Access Denied: ";
-//             if(succ) {
-//                 denyMessage += "You must be logged into an administrator account.";
-//             } else {
-//                 denyMessage += mess;
-//             }
-//             return { message: denyMessage, success: false };
-//         }
-//     });
-// }
-
-// function removeListing(username, password, prod_id, file) {
-//     // Authenticate user as admin, sending req.session.username as username and req.body.password as password
-//     authenticateUser(username, password, (err, succ, mess, adm) => {
-//         if(err) return err;
-
-//         if(succ && adm) {
-//             // Get product's current image so we can remove it from filesystem
-//             getProductInfo(prod_id, (err2, productInfo) => {
-//                 if(err2) return err2;
+        if(succ && adm) {
+            // Get product's current image so we can remove it from filesystem
+            getProductInfo(prod_id, (err2, productInfo) => {
+                if(err2) callback({ message: 'The following error occurred while retrieving product info: ' + err, success: false });
                 
-//                 // Remove product listing
-//                 try {
-//                     let sql = 'DELETE FROM Product WHERE product_id = $1';
-//                     const result = await db.query(sql, [prod_id]).rows;
-//                     if(productInfo.img_filename.startsWith('prodimage')) {
-//                         removeFile(productInfo.img_filename);
-//                     }
-//                     return { message: "Product listing removed successfully", success: true, dbResult: result };
-//                 } catch(err3) {
-//                     return { message: "There was an unexpected error.", success: false, dbResult: err3 };
-//                 }
-//             });
-//         } else {
-//             let denyMessage = "Access Denied: ";
-//             if(succ) {
-//                 denyMessage += "You must be logged into an administrator account.";
-//             } else {
-//                 denyMessage += mess;
-//             }
-//             return { message: denyMessage, success: false };
-//         }
-//     });
-// }
+                // Remove product listing
+                let sql = 'DELETE FROM Product WHERE product_id = $1';
+                db.query(sql, [prod_id])
+                    .then(result => {
+                        if(productInfo.img_filename.startsWith('prodimage')) {
+                            removeFile(productInfo.img_filename);
+                        }
+                        callback({ message: "Product listing removed successfully", success: true, dbResult: result });
+                    })
+                    .catch(err3 => {
+                        callback({ message: "There was an unexpected error.", success: false, dbResult: err3 });
+                    });
+            });
+        } else {
+            let denyMessage = "Access Denied: ";
+            if(succ) {
+                denyMessage += "You must be logged into an administrator account.";
+            } else {
+                denyMessage += mess;
+            }
+            callback({ message: denyMessage, success: false });
+        }
+    });
+}
 
-// async function editListing(username, formData, file) {
-//     // Authenticate user as admin, sending req.session.username as username and req.body.password as password
-//     authenticateUser(username, formData.password, (err, succ, mess, adm) => {
-//         if(err) {
-//             // If file was submitted, undo it
-//             if(file) {
-//                 removeFile(file.filename);
-//             }
+function editListing(username, formData, file, callback) {
+    // Authenticate user as admin, sending req.session.username as username and req.body.password as password
+    authenticateUser(username, formData.password, (err, succ, mess, adm) => {
+        if(err) callback({ message: mess, success: false });
 
-//             return err;
-//         }
+        if(succ && adm) {
+            // Get original values of given product id
+            getProductInfo(formData.id, (err2, productInfo) => {
+                if(err2) callback({ message: err2, success: false });
 
-//         if(succ && adm) {
-//             // Get original values of given product id
-//             getProductInfo(formData.id, (err2, productInfo) => {
-//                 if(err2) return err2;
-//                 if(productInfo) {
-//                     // Edit with new values, unless they are empty, then use original value.
-//                     const setTitle = formData.title ? formData.title : productInfo.title;
-//                     const setDesc = formData.description ? formData.description : productInfo.description;
-//                     const setPrice = formData.price ? formData.price : productInfo.price;
-//                     const setQuantity = formData.quantity ? formData.quantity : productInfo.quantity;
+                if(productInfo) {
+                    // Edit with new values, unless they are empty, then use original value.
+                    const setTitle = formData.title ? formData.title : productInfo.title;
+                    const setDesc = formData.description ? formData.description : productInfo.description;
+                    const setPrice = formData.price ? formData.price : productInfo.price;
+                    const setQuantity = formData.quantity ? formData.quantity : productInfo.quantity;
 
-//                     // If file is submitted use new image and remove old one (if image has prefix 'prodimage' as generated by multer)
-//                     let setImgFilename = productInfo.img_filename;
-//                     if(file) {
-//                         setImgFilename = file.filename;
-//                         if(productInfo.img_filename.startsWith('prodimage')) {
-//                             removeFile(productInfo.img_filename);
-//                         }
-//                     }
+                    // If file is submitted use new image and remove old one (if image has prefix 'prodimage' as generated by multer)
+                    let setImgFilename = productInfo.img_filename;
+                    if(file) {
+                        setImgFilename = file.filename;
+                        if(productInfo.img_filename.startsWith('prodimage')) {
+                            removeFile(productInfo.img_filename);
+                        }
+                    }
 
-//                     try {
-//                         let sql = 'UPDATE Product SET title = $1, description = $2, price = $3, quantity = $4, img_filename = $5 WHERE product_id = $6';
-//                         const result = await db.query(sql, [setTitle, setDesc, setPrice, setQuantity, setImgFilename, formData.id]).rows;
-//                         return { message: "Product listing edited successfully", success: true, dbResult: result };
-//                     } catch(err3) {
-//                         return { message: "There was an unexpected error.", success: false, dbResult: err3 };
-//                     }
-//                 } else {
-//                     return { message: "There is no product with the given product ID.", success: false };
-//                 }
-//             })
-//         } else {
-//             // If file was submitted, undo it
-//             if(file) {
-//                 removeFile(file.filename);
-//             }
+                    let sql = 'UPDATE Product SET title = $1, description = $2, price = $3, quantity = $4, img_filename = $5 WHERE product_id = $6';
+                    db.query(sql, [setTitle, setDesc, setPrice, setQuantity, setImgFilename, formData.id])
+                        .then(result => {
+                            callback({ message: "Product listing edited successfully", success: true, dbResult: result });
+                        })
+                        .catch(err3 => {
+                            callback({ message: "There was an unexpected error.", success: false, dbResult: err3 });
+                        });
+                } else {
+                    callback({ message: "There is no product with the given product ID.", success: false });
+                }
+            })
+        } else {
+            let denyMessage = "Access Denied: ";
+            if(succ) {
+                denyMessage += "You must be logged into an administrator account.";
+            } else {
+                denyMessage += mess;
+            }
+            callback({ message: denyMessage, success: false });
+        }
+    });
+}
 
-//             let denyMessage = "Access Denied: ";
-//             if(succ) {
-//                 denyMessage += "You must be logged into an administrator account.";
-//             } else {
-//                 denyMessage += mess;
-//             }
-//             return { message: denyMessage, success: false };
-//         }
-//     });
-// }
+// Deletes uploaded image in case authentication is unsuccessful (ASSUMES IMAGE IS IN client/public/assets/images)
+// (If user submits an image and a wrong password, image will still be uploaded and needs to be removed)
+function removeFile(filename) {
+    fs.unlink("../client/public/assets/images/" + filename, (err) => {
+        if(err) {
+            console.log(err);
+        } else {
+            console.log("Removed image.");
+        }
+    })
+}
 
-// // Deletes uploaded image in case authentication is unsuccessful (ASSUMES IMAGE IS IN client/public/assets/images)
-// // (If user submits an image and a wrong password, image will still be uploaded and needs to be removed)
-// function removeFile(filename) {
-//     fs.unlink("../client/public/assets/images/" + filename, (err) => {
-//         if(err) {
-//             console.log(err);
-//         } else {
-//             console.log("Removed image.");
-//         }
-//     })
-// }
-
-// module.exports = {addListing, removeListing, editListing, removeFile};
+module.exports = {addListing, removeListing, editListing, removeFile};
