@@ -1,0 +1,46 @@
+#add-page-title {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    margin-bottom: 10px;
+}
+
+#add-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+#title, #description, #price, #quantity, #image {
+    margin-bottom: 15px;
+}
+
+#title {
+    width: 25%;
+}
+
+#description {
+    font-family: sans-serif;
+}
+
+#price, #quantity {
+    width: 10%;
+}
+
+#add-submit {
+    width: 10%;
+    height: 40px;
+    border: none;
+    border-radius: 30px;
+    background-color: #2D3142;
+    color: #FFFFFF;
+    font-size: large;
+    font-weight: bold;
+}
+
+#add-submit:focus {
+    outline: solid;
+    outline-width: 3px;
+    outline-color: #EF8354;
+}

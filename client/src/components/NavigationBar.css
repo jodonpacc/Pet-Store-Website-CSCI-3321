@@ -57,6 +57,11 @@
     font-weight: bold;
 }
 
+#logo-link {
+    color: #2D3142;
+    text-decoration: none;
+}
+
 .other-button {
     display: flex;
     flex-direction: column;
