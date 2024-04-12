@@ -51,6 +51,30 @@ function getAllProducts(callback) {
         });
 }
 
+/* Returns a list of products that have not been removed, each product has the following fields:
+These are the products that will be displayed to users
+{
+    product_id:
+    title:
+    description:
+    price:
+    quantity:
+    img_filename:
+    rating:
+    removed: false
+}
+*/
+function getAvailableProducts(callback) {
+    const sql = 'SELECT * FROM Product WHERE removed = false';
+    db.query(sql)
+        .then(result => {
+            callback(null, result.rows);
+        })
+        .catch(err => {
+            callback(err, null);
+        });
+}
+
 /*
 Adds one of a product to the user's cart
 takes in {
@@ -62,4 +86,4 @@ function addToCart(username, productID) {
 
 }
 
-module.exports = {getProductInfo, getAllProducts, addToCart};
+module.exports = {getProductInfo, getAllProducts, getAvailableProducts, addToCart};

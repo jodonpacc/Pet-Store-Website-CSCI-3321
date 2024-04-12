@@ -32,6 +32,14 @@ router.get('/allProducts', function(req, res) {
     })
 });
 
+// productModel.getAvailableProducts()
+router.get('/availableProducts', function(req, res) {
+    productModel.getAvailableProducts((err, result) => {
+        if(err) return res.json(err)
+        return res.json(result);
+    })
+})
+
 // productModel.addToCart()
 router.get('/addToCart', (req, res) => {
     res.send([]);
