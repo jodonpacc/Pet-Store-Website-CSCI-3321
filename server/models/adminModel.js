@@ -39,10 +39,12 @@ function addListing(username, formData, file, callback) {
             }
 
             // Insert new product listing into database
-            let sql = 'INSERT INTO Product (title, description, price, quantity, img_filename) VALUES ($1, $2, $3, $4, $5)';
+            let sql = 'INSERT INTO Product (title, description, price, quantity, img_filename) VALUES ($1, $2, $3, $4, $5) RETURNING product_id';
             db.query(sql, [formData.title, formData.description, formData.price, formData.quantity, fileName])
                 .then(result => {
                     // HERE, need to get product ID somehow
+                    console.log(result.rows[0].product_id);
+                    addAdminChange('ADD', username, result.rows[0].product_id);
                     callback({ message: "Product listing added successfully", success: true, dbResult: result });
                 })
                 .catch(err2 => {
