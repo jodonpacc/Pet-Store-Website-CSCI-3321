@@ -57,4 +57,13 @@ router.post('/edit', upload.single('image'), function(req, res) {
     });
 });
 
+// adminModel.getAuditTrail()
+// Must be sent a product ID
+router.post('/audit', function(req, res) {
+    adminModel.getAuditTrail(req.body.productID, (err, result) => {
+        if(err) return res.json(err);
+        return res.json(result);
+    });
+});
+
 module.exports = router;

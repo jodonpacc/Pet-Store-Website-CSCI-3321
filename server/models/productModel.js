@@ -50,4 +50,15 @@ function getAllProducts(callback) {
         });
 }
 
-module.exports = {getProductInfo, getAllProducts};
+/*
+Adds one of a product to the user's cart
+takes in {
+    productID:
+}
+returns true for success, false for not success
+*/
+function addToCart(username, productID) {
+
+}
+
+module.exports = {getProductInfo, getAllProducts, addToCart};

@@ -195,4 +195,37 @@ function removeFile(filename) {
     })
 }
 
-module.exports = {addListing, removeListing, editListing, removeFile};
+/* Returns a list of all admin changes made to a product
+Takes in productID
+returns a List of AdminChanges {
+    change_id:
+    type:
+    change_time:
+    user_name:
+    product_id:
+}
+*/
+function getAuditTrail(productID, callback) {
+    let sql = 'SELECT * FROM AdminChange WHERE product_id = $1';
+    db.query(sql, [productID])
+        .then(result => {
+            callback(null, result.rows);
+        })
+        .catch(err => {
+            callback(err, null);
+        });
+}
+
+/* Adds a new entry to the AdminChange table to indicate a new admin log
+Takes in {
+    type: 'ADD', 'REMOVE', or 'EDIT'
+    username: (of admin who made change)
+    productID: (of product involved)
+}
+*/
+function addAdminChange(type, username, productID) {
+    let sql = 'INSERT INTO AdminChange (type, user_name, product_id) VALUES ($1, $2, $3)';
+    db.query(sql, [type, username, productID]).then(result => { console.log('Logged new admin change with DB result: ' + result) });
+}
+
+module.exports = {addListing, removeListing, editListing, removeFile, getAuditTrail, addAdminChange};

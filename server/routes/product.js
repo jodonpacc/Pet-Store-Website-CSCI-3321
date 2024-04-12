@@ -32,13 +32,7 @@ router.get('/allProducts', function(req, res) {
     })
 });
 
-/*
-Adds one of a product to the user's cart
-takes in {
-    productID:
-}
-returns true for success, false for not success
-*/
+// productModel.addToCart()
 router.get('/addToCart', (req, res) => {
     res.send([]);
 });
