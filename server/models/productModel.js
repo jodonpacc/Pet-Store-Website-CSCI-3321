@@ -37,6 +37,7 @@ function getProductInfo (id, callback) {
     quantity:
     img_filename:
     rating:
+    removed:
 }
 */
 function getAllProducts(callback) {
