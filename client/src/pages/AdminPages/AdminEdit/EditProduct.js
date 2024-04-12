@@ -114,6 +114,7 @@ function EditProduct() {
                 <label htmlFor="current-image">Original Image:</label>
                 <img id="current-image" src={'/assets/images/' + currentValues.img_filename} alt={"Current image of the " + currentValues.title + " product."} 
                     width="100" height="100"></img>
+                {currentValues.removed && <div style="color:red;">THIS PRODUCT HAS BEEN REMOVED</div>}
             </div>
 
             <Popup isOpen={isOpen} setOpen={setOpen}>

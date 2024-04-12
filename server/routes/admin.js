@@ -42,7 +42,7 @@ router.post('/add', upload.single('image'), function(req, res) {
 
 // Receives a product id to remove from the database
 router.post('/remove', function(req, res) {
-    adminModel.removeListing(req.session.username, req.body.password, req.body.prod_id, (result) => {
+    adminModel.setRemovedListing(req.session.username, req.body.password, req.body.prod_id, req.body.removing, (result) => {
         return res.json(result);
     });
 });

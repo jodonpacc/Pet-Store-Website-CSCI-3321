@@ -31,7 +31,7 @@ function AdminEdit() {
             <ul>
                 {products.map((item, idx) => (
                     <AdminProduct key={idx} id={item.product_id} name={item.title} description={item.description} price={item.price} 
-                    quantity={item.quantity} img={item.img_filename} buttonFunction={() => editProduct(item.product_id)} buttonName="Edit"/>
+                    quantity={item.quantity} img={item.img_filename} removed={item.removed} buttonFunction={() => editProduct(item.product_id)} buttonName="Edit"/>
                 ))}
             </ul>
         </div>

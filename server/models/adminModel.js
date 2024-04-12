@@ -74,7 +74,7 @@ callback takes in an object parameter with the following fields {
     dbResult: (if exists)
 }
 */
-function toggleRemovedListing(username, password, prod_id, removing, callback) {
+function setRemovedListing(username, password, prod_id, removing, callback) {
     // Authenticate user as admin, sending req.session.username as username and req.body.password as password
     authenticateUser(username, password, (err, succ, mess, adm) => {
         if(err) callback({ message: mess, success: false });
@@ -86,9 +86,9 @@ function toggleRemovedListing(username, password, prod_id, removing, callback) {
             db.query(sql, [removing, prod_id])
                 .then(result => {
                     // Add change to the audit log
-                    changeType = removing ? 'remove' : 'readd';
+                    changeType = removing ? 'REMOVE' : 'READD';
                     addAdminChange(changeType, username, prod_id);
-                    callback({ message: "Product listing " + changeType + "ed successfully", success: true, dbResult: result });
+                    callback({ message: "Product listing changed successfully. (Action: " + changeType + ")", success: true, dbResult: result });
                 })
                 .catch(err3 => {
                     callback({ message: "There was an unexpected error.", success: false, dbResult: err3 });
@@ -159,7 +159,7 @@ function editListing(username, formData, file, callback) {
                     db.query(sql, [setTitle, setDesc, setPrice, setQuantity, setImgFilename, formData.id])
                         .then(result => {
                             // Add change to the audit log
-                            addAdminChange('edit', username, formData.id);
+                            addAdminChange('EDIT', username, formData.id);
                             callback({ message: "Product listing edited successfully", success: true, dbResult: result });
                         })
                         .catch(err3 => {
@@ -218,7 +218,7 @@ function getAuditTrail(productID, callback) {
 
 /* Adds a new entry to the AdminChange table to indicate a new admin log
 Takes in {
-    type: 'add', 'remove', 'readd', or 'edit'
+    type: 'ADD', 'REMOVE', 'READD', or 'EDIT'
     username: (of admin who made change)
     productID: (of product involved)
 }
@@ -226,8 +226,8 @@ Takes in {
 function addAdminChange(type, username, productID) {
     let sql = 'INSERT INTO AdminChange (type, user_name, product_id) VALUES ($1, $2, $3)';
     db.query(sql, [type, username, productID])
-        .then(result => console.log('Logged new admin change with DB result: ' + result))
+        .then(result => console.log('Logged new admin ' + type + ' action by user ' + username))
         .catch(err => console.log('Error logging admin change: ' + err));
 }
 
-module.exports = {addListing, toggleRemovedListing, editListing, removeFile, getAuditTrail, addAdminChange};
+module.exports = {addListing, setRemovedListing, editListing, removeFile, getAuditTrail, addAdminChange};

@@ -10,7 +10,8 @@ function AdminRemove() {
     const [isOpen, setOpen] = useState(false);
     const [popupInfo, setPopupInfo] = useState({
         prod_id: 0,
-        password: ''
+        password: '',
+        removing: false
     });
 
     // Populates the products list with all products in the database
@@ -26,14 +27,14 @@ function AdminRemove() {
             .catch(err => console.log(err));
     }, []);
 
-    const promptPassword = (id) => {
+    const promptPassword = (id, removed) => {
         setOpen(true);
-        setPopupInfo({ ...popupInfo, prod_id: id });
+        setPopupInfo({ prod_id: id, password: '', removing: !removed });
     }
 
     // Deletes an item from database and view (if user is authenticated successfully).
     // Called after administrator clicks confirm button on password prompt popup.
-    // popupInfo has required info about which product (id) is being removed and the given password
+    // popupInfo has required info about which product (id) is being changed, the given password, and whether it is removing/readding the product
     const deleteItem = (e) => {
         e.preventDefault();
 
@@ -41,9 +42,14 @@ function AdminRemove() {
         axios.post('http://localhost:9000/admin/remove', popupInfo)
             .then(res => {
                 // handle response
-                // If remove was successful in backend, remove item from view
+                // If remove was successful in backend, update the item to show removed
                 if(res.data.success) {
-                    setProducts(products.filter((item) => item.product_id !== popupInfo.prod_id));
+                    setProducts(products.map((item) => {
+                        if(item.product_id === popupInfo.prod_id) {
+                            item.removed = popupInfo.removing;
+                        }
+                        return item;
+                    }));
                     setOpen(false);
                 }
                 console.log("Database result: " + res.data.dbResult);
@@ -54,11 +60,12 @@ function AdminRemove() {
 
     return (
         <div>
-            <h1>Admin Remove Product Listing Page</h1>
+            <h1>Admin Remove/Readd Product Listing Page</h1>
             <ul>
                 {products.map((item, idx) => (
                     <AdminProduct key={idx} id={item.product_id} name={item.title} description={item.description} price={item.price} 
-                    quantity={item.quantity} img={item.img_filename} buttonFunction={() => promptPassword(item.product_id)} buttonName="Remove"/>
+                    quantity={item.quantity} img={item.img_filename} removed={item.removed} buttonFunction={() => promptPassword(item.product_id, item.removed)} 
+                    buttonName={item.removed ? "Readd" : "Remove"}/>
                 ))}
             </ul>
 
