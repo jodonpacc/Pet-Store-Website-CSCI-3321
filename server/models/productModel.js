@@ -37,6 +37,7 @@ function getProductInfo (id, callback) {
     quantity:
     img_filename:
     rating:
+    removed:
 }
 */
 function getAllProducts(callback) {
@@ -50,4 +51,39 @@ function getAllProducts(callback) {
         });
 }
 
-module.exports = {getProductInfo, getAllProducts};
+/* Returns a list of products that have not been removed, each product has the following fields:
+These are the products that will be displayed to users
+{
+    product_id:
+    title:
+    description:
+    price:
+    quantity:
+    img_filename:
+    rating:
+    removed: false
+}
+*/
+function getAvailableProducts(callback) {
+    const sql = 'SELECT * FROM Product WHERE removed = false';
+    db.query(sql)
+        .then(result => {
+            callback(null, result.rows);
+        })
+        .catch(err => {
+            callback(err, null);
+        });
+}
+
+/*
+Adds one of a product to the user's cart
+takes in {
+    productID:
+}
+returns true for success, false for not success
+*/
+function addToCart(username, productID) {
+
+}
+
+module.exports = {getProductInfo, getAllProducts, getAvailableProducts, addToCart};

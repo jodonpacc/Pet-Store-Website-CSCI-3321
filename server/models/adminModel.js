@@ -39,9 +39,12 @@ function addListing(username, formData, file, callback) {
             }
 
             // Insert new product listing into database
-            let sql = 'INSERT INTO Product (title, description, price, quantity, img_filename) VALUES ($1, $2, $3, $4, $5)';
+            let sql = 'INSERT INTO Product (title, description, price, quantity, img_filename) VALUES ($1, $2, $3, $4, $5) RETURNING product_id';
             db.query(sql, [formData.title, formData.description, formData.price, formData.quantity, fileName])
                 .then(result => {
+                    // HERE, need to get product ID somehow
+                    console.log(result.rows[0].product_id);
+                    addAdminChange('ADD', username, result.rows[0].product_id);
                     callback({ message: "Product listing added successfully", success: true, dbResult: result });
                 })
                 .catch(err2 => {
@@ -59,12 +62,13 @@ function addListing(username, formData, file, callback) {
     });
 }
 
-/* Removes an existing product listing to the database with provided info. 
+/* Removes/reinstates an existing product listing to the database with provided info. 
 Authenticates user and only executes successfully if authentication is successful and user is an admin.
 takes in {
     username:
     password:
-    prod_id: product id to be removed
+    prod_id: product id to be changed
+    removing: true/false (sets the products removed attribute to this boolean)
 }
 callback takes in an object parameter with the following fields {
     message: 
@@ -72,29 +76,25 @@ callback takes in an object parameter with the following fields {
     dbResult: (if exists)
 }
 */
-function removeListing(username, password, prod_id, callback) {
+function setRemovedListing(username, password, prod_id, removing, callback) {
     // Authenticate user as admin, sending req.session.username as username and req.body.password as password
     authenticateUser(username, password, (err, succ, mess, adm) => {
         if(err) callback({ message: mess, success: false });
 
         if(succ && adm) {
-            // Get product's current image so we can remove it from filesystem
-            getProductInfo(prod_id, (err2, productInfo) => {
-                if(err2) callback({ message: 'The following error occurred while retrieving product info: ' + err, success: false });
-                
-                // Remove product listing
-                let sql = 'DELETE FROM Product WHERE product_id = $1';
-                db.query(sql, [prod_id])
-                    .then(result => {
-                        if(productInfo.img_filename.startsWith('prodimage')) {
-                            removeFile(productInfo.img_filename);
-                        }
-                        callback({ message: "Product listing removed successfully", success: true, dbResult: result });
-                    })
-                    .catch(err3 => {
-                        callback({ message: "There was an unexpected error.", success: false, dbResult: err3 });
-                    });
-            });
+            // Remove product listing
+            // let sql = 'DELETE FROM Product WHERE product_id = $1';
+            let sql = 'UPDATE Product SET removed = $1 WHERE product_id = $2';
+            db.query(sql, [removing, prod_id])
+                .then(result => {
+                    // Add change to the audit log
+                    changeType = removing ? 'REMOVE' : 'READD';
+                    addAdminChange(changeType, username, prod_id);
+                    callback({ message: "Product listing changed successfully. (Action: " + changeType + ")", success: true, dbResult: result });
+                })
+                .catch(err3 => {
+                    callback({ message: "There was an unexpected error.", success: false, dbResult: err3 });
+                });
         } else {
             let denyMessage = "Access Denied: ";
             if(succ) {
@@ -160,6 +160,8 @@ function editListing(username, formData, file, callback) {
                     let sql = 'UPDATE Product SET title = $1, description = $2, price = $3, quantity = $4, img_filename = $5 WHERE product_id = $6';
                     db.query(sql, [setTitle, setDesc, setPrice, setQuantity, setImgFilename, formData.id])
                         .then(result => {
+                            // Add change to the audit log
+                            addAdminChange('EDIT', username, formData.id);
                             callback({ message: "Product listing edited successfully", success: true, dbResult: result });
                         })
                         .catch(err3 => {
@@ -195,4 +197,39 @@ function removeFile(filename) {
     })
 }
 
-module.exports = {addListing, removeListing, editListing, removeFile};
+/* Returns a list of all admin changes made to a product
+Takes in productID
+returns a List of AdminChanges {
+    change_id:
+    type:
+    change_time:
+    user_name:
+    product_id:
+}
+*/
+function getAuditTrail(productID, callback) {
+    let sql = 'SELECT * FROM AdminChange WHERE product_id = $1 ORDER BY change_time DESC';
+    db.query(sql, [productID])
+        .then(result => {
+            callback(null, result.rows);
+        })
+        .catch(err => {
+            callback(err, null);
+        });
+}
+
+/* Adds a new entry to the AdminChange table to indicate a new admin log
+Takes in {
+    type: 'ADD', 'REMOVE', 'READD', or 'EDIT'
+    username: (of admin who made change)
+    productID: (of product involved)
+}
+*/
+function addAdminChange(type, username, productID) {
+    let sql = 'INSERT INTO AdminChange (type, user_name, product_id) VALUES ($1, $2, $3)';
+    db.query(sql, [type, username, productID])
+        .then(result => console.log('Logged new admin ' + type + ' action by user ' + username))
+        .catch(err => console.log('Error logging admin change: ' + err));
+}
+
+module.exports = {addListing, setRemovedListing, editListing, removeFile, getAuditTrail, addAdminChange};

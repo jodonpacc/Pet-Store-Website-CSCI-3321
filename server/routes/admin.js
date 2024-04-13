@@ -42,7 +42,7 @@ router.post('/add', upload.single('image'), function(req, res) {
 
 // Receives a product id to remove from the database
 router.post('/remove', function(req, res) {
-    adminModel.removeListing(req.session.username, req.body.password, req.body.prod_id, (result) => {
+    adminModel.setRemovedListing(req.session.username, req.body.password, req.body.prod_id, req.body.removing, (result) => {
         return res.json(result);
     });
 });
@@ -53,6 +53,15 @@ router.post('/edit', upload.single('image'), function(req, res) {
         if(!result.success && req.file) {
             adminModel.removeFile(req.file.filename);
         }
+        return res.json(result);
+    });
+});
+
+// adminModel.getAuditTrail()
+// Must be sent a product ID
+router.post('/audit', function(req, res) {
+    adminModel.getAuditTrail(req.body.productID, (err, result) => {
+        if(err) return res.json(err);
         return res.json(result);
     });
 });
