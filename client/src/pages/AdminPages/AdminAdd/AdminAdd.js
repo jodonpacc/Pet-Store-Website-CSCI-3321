@@ -1,6 +1,8 @@
 import { React, useState } from 'react';
+import NavigationBar from "../../../components/NavigationBar";
 import axios from 'axios';
 import Popup from '../../../components/Popup';
+import './AdminAdd.css'
 
 function AdminAdd() {
     axios.defaults.withCredentials = true;
@@ -50,16 +52,17 @@ function AdminAdd() {
 
     return (
         <div>
-            <h1>Admin Add Product Listing Page</h1>
+            <NavigationBar/>
+            <h1 id="add-page-title">Admin Add Product Listing Page</h1>
             {/* Fields to keep track of - Title, Description, Price, Quantity, Image filename. Rating defaults to 0 so is left out */}
-            <form onSubmit={openDialog}>
+            <form id="add-form" onSubmit={openDialog}>
                 <label htmlFor="title">Title:*</label>
                 <input id="title" type="text" required="required" minLength="5" maxLength="50" 
                     onChange={e => setAddValues({ ...addValues, title: e.target.value })}></input>
 
                 <label htmlFor="description">Description:*</label>
-                <input id="description" type="text" required="required" minLength="5" maxLength="500" 
-                    onChange={e => setAddValues({ ...addValues, description: e.target.value })}></input>
+                <textarea id="description" type="text" required="required" minLength="5" maxLength="500" 
+                    onChange={e => setAddValues({ ...addValues, description: e.target.value })}></textarea>
 
                 <label htmlFor="price">Price:*</label>
                 <input id="price" type="number" step="0.01" min="0" required="required" minLength="5" maxLength="50" 
@@ -73,7 +76,7 @@ function AdminAdd() {
                 <input id="image" type="file" accept="image/png, image/jpeg"
                     onChange={e => setAddValues({ ...addValues, image: e.target.files[0] })}></input>
 
-                <input type="submit" value="Submit"></input>
+                <input id="add-submit" type="submit" value="Submit"></input>
             </form>
 
             <Popup isOpen={isOpen} setOpen={setOpen}>

@@ -47,7 +47,7 @@ function NavigationBar() {
         <div id="nav-bar">
             <div id="nav-sections"> 
                 <div id="left-items">
-                    <div className="logo">PetSmarter</div>
+                    <div className="logo"><a id="logo-link" href='/home'>PetSmarter</a></div>
                     <input type="text" id="search-bar" placeholder="Search..." maxLength="40"></input>
                     {userInfo.isAdmin && <button id="admin-button" onClick={() => gotoPage('admin')}><img id="admin-icon" src={WrenchIcon} alt="Wrench Icon"/> Admin</button>}
                 </div>

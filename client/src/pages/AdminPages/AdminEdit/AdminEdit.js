@@ -1,4 +1,5 @@
 import { React, useState, useEffect } from 'react';
+import NavigationBar from "../../../components/NavigationBar";
 import axios from 'axios';
 import AdminProduct from '../../../components/AdminProduct';
 
@@ -27,6 +28,7 @@ function AdminEdit() {
 
     return (
         <div>
+            <NavigationBar/>
             <h1>Admin Edit Product Listing Page</h1>
             <ul>
                 {products.map((item, idx) => (
