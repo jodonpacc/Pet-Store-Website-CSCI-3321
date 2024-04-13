@@ -208,7 +208,7 @@ returns a List of AdminChanges {
 }
 */
 function getAuditTrail(productID, callback) {
-    let sql = 'SELECT * FROM AdminChange WHERE product_id = $1';
+    let sql = 'SELECT * FROM AdminChange WHERE product_id = $1 ORDER BY change_time DESC';
     db.query(sql, [productID])
         .then(result => {
             callback(null, result.rows);
