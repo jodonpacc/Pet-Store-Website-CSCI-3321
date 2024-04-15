@@ -10,7 +10,9 @@ returns List [ {
     price:
 } ]
 */
-function getCartItems(username) {
+function getCartItems(session) {
+    // if user has no cart, return empty list []
+    // otherwise,
 
 }
 
