@@ -46,6 +46,10 @@ body {
     font-weight: bold;
 }
 
+#addToCartBtn {
+    background-color: #EF8354;
+}
+
 /* TODO: Make image size responsive maybe */
 .PVimg {
     width: 350px;

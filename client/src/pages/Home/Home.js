@@ -11,7 +11,7 @@ function HomePage({ }) {
     axios.defaults.withCredentials = true;
     const [products, setProducts] = useState([]);
 
-    // useEffect make the Axios request when the component mounts
+    // useEffect make the Axios request when the component mounts, fetching all the data
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -43,7 +43,8 @@ function HomePage({ }) {
                 <div id="product-array">
                     {products.map((product, index) => (
                         //key is just something React requires
-                        <ProductCard key={index} imgname={product.img_filename} title={product.title} destination={"/product"} />
+                        //each product card leads the user to its corresponding page
+                        <ProductCard key={index} imgname={product.img_filename} title={product.title} destination={"/product/" + product.product_id} />
                     ))}
                 </div>
             </div>
