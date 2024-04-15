@@ -22,12 +22,12 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "product",
-    element: ProductView(13),
-  },
-  {
     path: "login",
     element: <Login />,
+  },
+  {
+    path: "product/:productId",
+    element: < ProductView />,
   },
   {
     path: "home",
