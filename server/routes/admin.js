@@ -29,8 +29,21 @@ const upload = multer({
     storage: storage
 });
 
-// Receives information to create a new product listing, potentially including an image file
-// If addListing fails, the given image (if it exists) must be removed
+/* adminModel.addListing()
+Expects
+req.body {
+    title:
+    description:
+    price:
+    quantity:
+    rating:
+    password:
+}
+file {
+    filename: (of uploaded image)
+} 
+If addListing fails, the given image (if it exists) must be removed
+*/
 router.post('/add', upload.single('image'), function(req, res) {
     adminModel.addListing(req.session.username, req.body, req.file, (result) => {
         if(!result.success && req.file) {
@@ -40,14 +53,36 @@ router.post('/add', upload.single('image'), function(req, res) {
     });
 });
 
-// Receives a product id to remove from the database
+/* adminModel.removeListing()
+Expects
+req.body {
+    password:
+    prod_id
+    removing
+}
+*/
 router.post('/remove', function(req, res) {
     adminModel.setRemovedListing(req.session.username, req.body.password, req.body.prod_id, req.body.removing, (result) => {
         return res.json(result);
     });
 });
 
-// Receives a product id and information to edit the attributes of the listing in the database
+/* adminModel.addListing()
+Expects
+req.body {
+    id:
+    title:
+    description:
+    price:
+    quantity:
+    rating:
+    password:
+}
+file {
+    filename: (of uploaded image)
+} 
+If image is changed, the old image must be removed
+*/
 router.post('/edit', upload.single('image'), function(req, res) {
     adminModel.editListing(req.session.username, req.body, req.file, (result) => {
         if(!result.success && req.file) {
