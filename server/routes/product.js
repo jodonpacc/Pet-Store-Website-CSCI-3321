@@ -40,9 +40,4 @@ router.get('/availableProducts', function(req, res) {
     })
 })
 
-// productModel.addToCart()
-router.get('/addToCart', (req, res) => {
-    res.send([]);
-});
-
 module.exports = router;

@@ -29,4 +29,9 @@ router.post('/checkout', (req, res) => {
     res.send([]);
 });
 
+// cartModel.addToCart()
+router.get('/addToCart', (req, res) => {
+    res.send([]);
+});
+
 module.exports = router;

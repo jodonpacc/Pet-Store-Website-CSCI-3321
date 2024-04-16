@@ -75,43 +75,4 @@ function getAvailableProducts(callback) {
         });
 }
 
-/*
-Adds one of a product to the user's cart
-takes in {
-    session: (session object which contains a field cart, a Map<int, int> with the user's cart info)
-    productID:
-}
-returns true for success, false for not success
-*/
-function addToCart(session, productID) {
-    // check if user has a cart
-        // if not, create a cart for the user and put in the session
-
-    // add product to cart
-    // check if product is already in cart
-        // if so, get its current quantity and increment it by 1
-    // if not, add new entry to cart map
-}
-
-
-/* cart info as an object?
-fields {
-    Map<product_id, ProductInfo> cart (save actual product info in here somehow?)
-    ? subtotal
-    ? tax
-    ? total
-}
-functions {
-    addItem(product_id) - adds object to map, handles both cases
-    removeItem(product_id)
-    incrementQuantity(product_id)
-}
-
-ProductInfo is a container class for the following fields {
-    title: from Product db table
-    price: from Product db table
-    quantity: (QUANTITY OF THIS PRODUCT IN THE CART, NOT INVENTORY)
-}
-*/
-
 module.exports = {getProductInfo, getAllProducts, getAvailableProducts, addToCart};
