@@ -5,6 +5,8 @@ import NavigationBar from "../../components/NavigationBar";
 import axios from 'axios'
 import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import { getUserInfo } from '../../helperFunctionality/sessionInfo'
+import AuditTrail from '../../components/AuditTrail';
 
 function ProductView() {
     // This line must be present on every main page so that session information is circulated properly
@@ -12,6 +14,7 @@ function ProductView() {
     const productId = useParams().productId;
 
     const [productData, setProduct] = useState({});
+    const [isAdmin, setIsAdmin] = useState(false);
 
     // Fetch product info from backend in the form of:
     /* {
@@ -32,6 +35,16 @@ function ProductView() {
         };
 
         fetchData(); // Call the fetchData function
+
+        // Figures out if user is admin or not
+        getUserInfo((res) => {
+            if(res.valid) {
+                // If res.is_admin is true, the audit log will display
+                setIsAdmin(res.is_admin);
+            } else {
+                setIsAdmin(false);
+            }
+        });
     }, []);
     
     const addToCart = (event) => {
@@ -60,6 +73,7 @@ function ProductView() {
                     <button id="addToCartBtn" onClick={addToCart}>Add to Cart</button>
                 </div>
             </div>
+            {isAdmin && <AuditTrail id={productId}/>}
         </div>
     );
 }
