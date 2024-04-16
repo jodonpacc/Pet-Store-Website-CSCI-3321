@@ -30,7 +30,12 @@ router.post('/checkout', (req, res) => {
 });
 
 // cartModel.addToCart()
-router.get('/addToCart', (req, res) => {
+router.post('/addToCart', (req, res) => {
+    res.send([]);
+});
+
+// cartModel.removeFromCart()
+router.post('/removeFromCart', (req, res) => {
     res.send([]);
 });
 

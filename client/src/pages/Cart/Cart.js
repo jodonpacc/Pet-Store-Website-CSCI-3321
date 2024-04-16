@@ -15,12 +15,11 @@ function CartItem({id, name, quantity, price, deleteSelf}) {
     const [itemCount, setItemCount] = useState(quantity)
 
     const updateQuantity = (e) => {
+        axios.post('http://localhost:9000/cart/adjustQuantity', { itemID: id, newQuantity: e.target.value }); //handle bad inputs at some point. 
         if (parseInt(e.target.value) === 0) {
-            fetch("adjustQuantity?itemID=" + id + "&newQuantity=" + e.target.value) //handle bad inputs at some point. 
             // Still need to call this so backend deletes it. Probably hackable lol
             deleteSelf()
         } else {
-            fetch("adjustQuantity?itemID=" + id + "&newQuantity=" + e.target.value) //handle bad inputs at some point
             setItemCount(e.target.value)
         }
     }
@@ -62,18 +61,23 @@ function CartPage({}) {
     const [cartItems, setCartItems] = useState([fakeItem, fakeItem])
 
     useEffect(() => {
-        fetch('cartItems').then(data => {
-            if (data) {
-                setCartItems(data)
+        axios.get('http://localhost:9000/cart/cartItems').then(res => {
+            if (res.data) {
+                setCartItems(res.data);
             }
-            console.log("Failed to fetch cart items")
-            setCartItems([fakeItem, fakeItem])
+            console.log("Failed to fetch cart items");
+            setCartItems([fakeItem, fakeItem]);
         })
     }, [])
 
     // Deletes an item. Called when quantity is edited to zero
     const deleteItem = (id) => {
         setCartItems((items) => items.filter(item => item.itemID !== id))
+        axios.post('http://localhost:9000/cart/removeFromCart', id)
+            .then(res => {
+                console.log('Backend response from removing item from cart: ' + res.data);
+            })
+            .catch(err => console.log(err));
     }
 
     /*
@@ -87,16 +91,13 @@ function CartPage({}) {
         cvv:
     } */
     const checkout = () => {
-        fetch("", 
-        {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(checkoutData)
-        }).then(data => {
-            if (data) {
-                window.location.href = "/home"
-            }
-        })
+        axios.post('http://localhost:9000/cart/checkout', checkoutData)
+            .then(res => {
+                if (res) {
+                    window.location.href = "/home"
+                }
+            })
+            .catch(err => console.log(err));
     }
  
     return (

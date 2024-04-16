@@ -75,4 +75,4 @@ function getAvailableProducts(callback) {
         });
 }
 
-module.exports = {getProductInfo, getAllProducts, getAvailableProducts, addToCart};
+module.exports = {getProductInfo, getAllProducts, getAvailableProducts};

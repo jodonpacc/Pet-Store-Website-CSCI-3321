@@ -1,6 +1,5 @@
 const db = require("../db_connection.js").db_connection;
-const CartInfo = require("./CartInfo.js").cart;
-const ProductInfo = require("./CartInfo.js").product;
+const CartInfo = require("./CartInfo.js");
 
 /*
 Returns a list of Cart Items to display on the cart page. 
@@ -13,9 +12,12 @@ returns List [ {
 } ]
 */
 function getCartItems(session) {
-    // if user has no cart, return empty list []
-    // otherwise,
+    if(session.cart) {
 
+    } else {
+        // if user has no cart, return empty list []
+        return [];
+    }
 }
 
 /*
@@ -43,7 +45,10 @@ takes in {
 returns successful/not
 */
 function checkout(orderInfo) {
+    // Clear user cart
+    session.cart = undefined;
 
+    // Other stuff
 }
 
 /*
@@ -55,30 +60,40 @@ takes in {
 returns true for success, false for not success
 */
 function addToCart(session, productID) {
-    // check if user has a cart, if not, create an empty one
-    if(!session.cart) {
-        session.cart = new CartInfo();
-    }
+    // Create a new CartInfo with cart info from session
+    // If session.cart is undefined, an empty CartInfo will be created
+    let cartInfo = new CartInfo(session.cart);
+    
+    // Retreive title, price, and removed for the given product
+    let sql = "SELECT title, price, removed FROM Product WHERE product_id = $1";
+    db.query(sql, [productID])
+        .then(result => {
+            prod_info = result.rows[0];
+            if(!prod_info.removed) {
+                cartInfo.addItem(prod_info.title, prod_info.price, productID);
 
-    // Construct cart Map from entries (can't save a Map in session, have to save its entries, an Array, and construct a new Map from that)
-    let map = new Map(cart.entries);
-    // Check if product is already in cart
-    if(map.has(productID)) {
-        // Increment its quantity
-        map.get(productID).quantity += 1;
-    } else {
-        // Retreive product title and price from DB
-        const title = "";
-        const price = 0;
+                // Store the CartInfo in session, but replace cartmap with entries, an Array form of cartmap (explained in CartInfo.js constructor)
+                session.cart = {entries: Array.from(cartInfo.cartmap.entries()), subtotal: cartInfo.subtotal, tax: cartInfo.tax, total: cartInfo.total };
+                console.log("session.cart after adding item to cart: " + session.cart);
 
-        // Add new entry to the cart
-        map.set(productID, new ProductInfo(title, price, 1));
-
-        // Update subtotal, tax, and total
-    }
-
-    // Convert the map into an array of key-value pairs to be stored in session
-    session.cart.entries = Array.from(map.entries());
+                // return successful
+            } else {
+                // return you cant do that, product is not available
+            }
+        })
+        .catch(err => {
+            // return error
+        })
 }
 
-module.exports = {getCartItems, adjustQuantity, checkout};
+// Given a product ID, removes a product from the user's cart
+// Gets cart info from session, calls CartInfo.removeItem(productID) and
+// returns same value as CartInfo.removeItem()
+function removeFromCart(session, productID) {
+    let cartInfo = new CartInfo(session.cart);
+    ret = cartInfo.removeItem(productID);
+    session.cart = {entries: Array.from(cartInfo.cartmap.entries()), subtotal: cartInfo.subtotal, tax: cartInfo.tax, total: cartInfo.total };
+    return ret;
+}
+
+module.exports = {getCartItems, adjustQuantity, checkout, addToCart, removeFromCart};
