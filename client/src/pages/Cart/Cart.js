@@ -4,16 +4,30 @@ import {React, useEffect, useState} from 'react';
 import './Cart.css';
 import axios from 'axios';
 
-function CartItem({id, name, quantity, price, deleteSelf}) {
-    const [itemCount, setItemCount] = useState(quantity)
+function CartItem({id, name, quantity, price, deleteSelf, updateCartInfo}) {
+    const [itemCount, setItemCount] = useState(quantity);
+
+    // Ensure that itemCount is set to quantity when rendered
+    // Because sometimes it doesn't??
+    useEffect(() => {setItemCount(quantity)}, [quantity]);
 
     const updateQuantity = (e) => {
-        if (parseInt(e.target.value) === 0) {
+        const newQuantity = parseInt(e.target.value);
+        if (newQuantity === 0) {
             // Still need to call this so backend deletes it. Probably hackable lol
             deleteSelf()
         } else {
-            axios.post('http://localhost:9000/cart/adjustQuantity', { itemID: id, newQuantity: e.target.value }); //handle bad inputs at some point. 
-            setItemCount(e.target.value)
+            axios.post('http://localhost:9000/cart/adjustQuantity', { itemID: id, newQuantity: newQuantity })
+                .then(res => {
+                    if(res.data) {
+                        setItemCount(newQuantity);
+                        updateCartInfo(res.data, id, newQuantity);
+                    } else {
+                        alert("Unable to adjust product quantity");
+                    }
+                })
+                .catch(err => console.log(err));
+            
         }
     }
 
@@ -42,6 +56,14 @@ function CartPage({}) {
         cvv: "",
     })
 
+    const [cartItems, setCartItems] = useState([])
+    // Contains info relevant for displaying cart subtotal, tax, and total
+    const [moneyInfo, setMoneyInfo] = useState({
+        subtotal: 0.0,
+        tax: 0.0,
+        total: 0.0
+    })
+
     // Retrieves all the items in a user's cart in the form of:
     /*
     res {
@@ -56,16 +78,8 @@ function CartPage({}) {
         total:
     }
     */
-    const [cartItems, setCartItems] = useState([])
-    const [moneyInfo, setMoneyInfo] = useState({
-        subtotal: 0.0,
-        tax: 0.0,
-        total: 0.0
-    })
-
     useEffect(() => {
         axios.get('http://localhost:9000/cart/cartInfo').then(res => {
-            console.log(res.data);
             if (res.data) {
                 setCartItems(res.data.items);
                 setMoneyInfo({ subtotal: res.data.subtotal, tax: res.data.tax, total: res.data.total });
@@ -77,16 +91,34 @@ function CartPage({}) {
 
     // Deletes an item. Called when quantity is edited to zero
     const deleteItem = (id) => {
-        setCartItems((items) => items.filter(item => item.itemID !== id))
         axios.post('http://localhost:9000/cart/removeFromCart', { productID: id })
             .then(res => {
                 if(res.data) {
+                    setCartItems(cartItems.filter(item => item.itemID !== id));
                     setMoneyInfo(res.data);
                 } else {
                     console.log("failed to remove product from cart");
                 }
             })
             .catch(err => console.log(err));
+    }
+
+    /* Called by a CartItem when its quantity is updated
+    Updates the moneyInfo state and the cartItems state
+    moneyStuff contains the following fields {
+        subtotal:
+        tax:
+        total:
+    }
+    */
+    const updateQuantity = (moneyStuff, id, newQuantity) => {
+        setCartItems(cartItems.map((item) => {
+            if(item.itemID === id) {
+                item.quantity = newQuantity;
+            }
+            return item;
+        }));
+        setMoneyInfo(moneyStuff);
     }
 
     /*
@@ -108,6 +140,11 @@ function CartPage({}) {
             })
             .catch(err => console.log(err));
     }
+
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD'
+    });
  
     return (
         <div id="cart-page">
@@ -120,7 +157,8 @@ function CartPage({}) {
                     <div className="cart-fake-hr"></div>
                     <div id="items">
                         {cartItems.map((item, idx) => (
-                            <CartItem key={idx} id={item.itemID} name={item.itemName} price={item.price} quantity={item.quantity} deleteSelf={() => deleteItem(item.itemID)}/>
+                            <CartItem key={idx} id={item.itemID} name={item.itemName} price={item.price} quantity={item.quantity} deleteSelf={() => deleteItem(item.itemID)} 
+                            updateCartInfo={(moneyStuff, id, newQuantity) => updateQuantity(moneyStuff, id, newQuantity)}/>
                         ))}
                     </div>
                 </div>
@@ -128,14 +166,16 @@ function CartPage({}) {
                     <div id="transaction-info">
                         <div id="subtotal">
                             <div id="sub-name">Subtotal:</div>
-                            <div id="sub-amt">{"$" + moneyInfo.subtotal}</div>
+                            <div id="sub-amt">{formatter.format(moneyInfo.subtotal)}</div>
                         </div>
                         <div id="tax">
                             <div id="tax-name">Tax:</div>
-                            <div id="tax-amt">{"$" + moneyInfo.tax}</div>
+                            <div id="tax-amt">{formatter.format(moneyInfo.tax)}</div>
                         </div>
-                        <div id="total">Total:</div>
-                        <div id="total-amt">{"$" + moneyInfo.total}</div>
+                        <div id="total">
+                            <div id="total-name">Total:</div>
+                            <div id="total-amt">{formatter.format(moneyInfo.total)}</div>
+                        </div>
                     </div>
                     <form id="checkout-form">
                         <div id="card-info">
@@ -144,7 +184,7 @@ function CartPage({}) {
                         </div>
                         <input type="text" className="checkout-input" placeholder="Credit Card #" required="required"></input>
                         <input type="text" className="checkout-input" placeholder="Address, Zip, City, State" required="required"></input>
-                        <input type="submit" id="checkout-button" value="Purchase"></input>
+                        <input type="submit" id="checkout-button" value="Purchase" onClick={checkout}></input>
                     </form>
                 </div>
             </div>

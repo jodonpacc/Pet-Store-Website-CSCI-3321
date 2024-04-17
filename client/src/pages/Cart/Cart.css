@@ -88,7 +88,7 @@
     padding-top: 20px;
 }
 
-#subtotal, #tax {
+#subtotal, #tax, #total {
     display: flex;
     justify-content: space-between;
     font-size: 20px;
@@ -99,7 +99,7 @@
     font-weight: bold;
 }
 
-#total {
+#total-name {
     font-size: 30px;
     font-weight: bolder;
 }

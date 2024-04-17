@@ -16,13 +16,12 @@ router.use(cors({
 
 // cartModel.getCartItems()
 router.get('/cartInfo', (req, res) => {
-    console.log(req.session.cart);
     return res.json(cartModel.getCartInfo(req.session));
 });
 
 // cartModel.adjustQuantity()
-router.get('/adjustQuantity', (req, res) => {
-    res.send([]);
+router.post('/adjustQuantity', (req, res) => {
+    return res.json(cartModel.adjustQuantity(req.session, req.body.itemID, req.body.newQuantity));
 });
 
 // cartModel.checkout()

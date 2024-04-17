@@ -61,7 +61,19 @@ class CartInfo {
 
     // Sets the quantity of a given product in the cart
     setQuantity(product_id, newQuantity) {
-        
+        if(this.cartmap.has(product_id)) {
+            const oldQuantity = this.cartmap.get(product_id).quantity;
+            const price = this.cartmap.get(product_id).price;
+            this.cartmap.get(product_id).quantity = newQuantity;
+            
+            // Update money fields
+            this.subtotal = parseFloat(formatterUSD.format(this.subtotal + ((newQuantity-oldQuantity) * price)));
+            this.tax = parseFloat(formatterUSD.format(this.subtotal * 0.0825));
+            this.total = parseFloat(formatterUSD.format(this.subtotal + this.tax));
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 

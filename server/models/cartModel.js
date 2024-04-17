@@ -27,13 +27,24 @@ function getCartInfo(session) {
 /*
 Adjusts the database quantity of an item in the user's cart and removes it if quantity is zero. 
 takes in {
+    session:
     itemID:
     newQuantity:
 }
-returns true for success, false for not success
+returns info containing new money info {
+    subtotal:
+    tax:
+    total:
+}
 */
-function adjustQuantity(itemID, newQuantity) {
-    
+function adjustQuantity(session, itemID, newQuantity) {
+    let cartInfo = new CartInfo(session.cart);
+    if(cartInfo.setQuantity(itemID, newQuantity)) {
+        session.cart = {entries: Array.from(cartInfo.cartmap.entries()), subtotal: cartInfo.subtotal, tax: cartInfo.tax, total: cartInfo.total };
+        return {subtotal: cartInfo.subtotal, tax: cartInfo.tax, total: cartInfo.total};
+    } else {
+        return undefined;
+    }
 }
 
 /*
@@ -52,7 +63,7 @@ function checkout(orderInfo) {
     // Clear user cart
     session.cart = undefined;
 
-    // Other stuff
+    // Other stuff like update product stock
 }
 
 /*
@@ -78,8 +89,6 @@ function addToCart(session, productID, callback) {
 
                 // Store the CartInfo in session, but replace cartmap with entries, an Array form of cartmap (explained in CartInfo.js constructor)
                 session.cart = {entries: Array.from(cartInfo.cartmap.entries()), subtotal: cartInfo.subtotal, tax: cartInfo.tax, total: cartInfo.total };
-                console.log("Session after adding product ID " + productID + " to cart:");
-                console.log(session.cart);
 
                 // return successful
                 callback("Successfully added product to cart.");
@@ -95,14 +104,19 @@ function addToCart(session, productID, callback) {
         })
 }
 
-// Given a product ID, removes a product from the user's cart
-// Gets cart info from session, calls CartInfo.removeItem(productID) and
-// returns same value as CartInfo.removeItem()
+/* Given a product ID, removes a product from the user's cart
+Gets cart info from session, calls CartInfo.removeItem(productID) and
+returns info containing new money info {
+    subtotal:
+    tax:
+    total:
+}
+*/
 function removeFromCart(session, productID) {
     let cartInfo = new CartInfo(session.cart);
-    cartInfo.removeItem(productID);
+    const success = cartInfo.removeItem(productID);
     session.cart = {entries: Array.from(cartInfo.cartmap.entries()), subtotal: cartInfo.subtotal, tax: cartInfo.tax, total: cartInfo.total };
-    return {subtotal: cartInfo.subtotal, tax: cartInfo.tax, total: cartInfo.total};
+    return success ? {subtotal: cartInfo.subtotal, tax: cartInfo.tax, total: cartInfo.total} : undefined;
 }
 
 module.exports = {getCartInfo, adjustQuantity, checkout, addToCart, removeFromCart};
