@@ -28,7 +28,7 @@ function HomePage({ }) {
 
     return (
         <div id="home-page">
-            <NavigationBar />
+            <NavigationBar search={products}/>
             <div id="padded-center">
                 {/* not supporting categories
                  <div id="featured-categories">
