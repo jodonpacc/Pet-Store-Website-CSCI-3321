@@ -19,7 +19,6 @@ router.use(express.json());
 
 // productModel.getProductInfo()
 router.post('/', function (req, res) {
-    console.log(req.body.prod_id);
     productModel.getProductInfo(req.body.prod_id, (err, result) => {
         if (err) return res.json(err);
         return res.json(result);

@@ -48,9 +48,10 @@ function ProductView() {
     }, []);
     
     const addToCart = (event) => {
-        axios.post('http://localhost:9000/product/addToCart', productId)
+        axios.post('http://localhost:9000/cart/addToCart', { productID: productId })
             .then(res => {
                 console.log(res)
+                alert(res.data);
                 window.location.href = 'http://localhost:3000/Cart'
             })
             .catch(err => console.log(err));

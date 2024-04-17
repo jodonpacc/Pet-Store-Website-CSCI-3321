@@ -11,19 +11,17 @@ returns List [ {
     price:
 } ]
 */
-function getCartItems(session) {
+function getCartInfo(session) {
+    let ret = [];
     if(session.cart) {
-        let ret = [];
-        for(let i = 0; i<session.cart.entries; i++) {
+        for(let i = 0; i<session.cart.entries.length; i++) {
             const entry = session.cart.entries[i];
             ret.push({itemID: entry[0], itemName: entry[1].title, quantity: entry[1].quantity, price: entry[1].price });
         }
-        console.log(ret);
-        return ret;
-    } else {
-        // if user has no cart, return empty list []
-        return [];
     }
+
+    // return the cart information
+    return { items: ret, subtotal: session.cart.subtotal, tax: session.cart.tax, total: session.cart.total };
 }
 
 /*
@@ -75,7 +73,6 @@ function addToCart(session, productID, callback) {
     db.query(sql, [productID])
         .then(result => {
             prod_info = result.rows[0];
-            console.log(prod_info.removed);
             if(!prod_info.removed) {
                 cartInfo.addItem(prod_info.title, prod_info.price, productID);
 
@@ -85,16 +82,16 @@ function addToCart(session, productID, callback) {
                 console.log(session.cart);
 
                 // return successful
-                callback(true);
+                callback("Successfully added product to cart.");
             } else {
                 // return you cant do that, product is not available
-                callback(false);
+                callback("This product is unavailable.");
             }
         })
         .catch(err => {
             // return error
             console.log(err);
-            callback(false);
+            callback(err);
         })
 }
 
@@ -103,9 +100,9 @@ function addToCart(session, productID, callback) {
 // returns same value as CartInfo.removeItem()
 function removeFromCart(session, productID) {
     let cartInfo = new CartInfo(session.cart);
-    ret = cartInfo.removeItem(productID);
+    cartInfo.removeItem(productID);
     session.cart = {entries: Array.from(cartInfo.cartmap.entries()), subtotal: cartInfo.subtotal, tax: cartInfo.tax, total: cartInfo.total };
-    return ret;
+    return {subtotal: cartInfo.subtotal, tax: cartInfo.tax, total: cartInfo.total};
 }
 
-module.exports = {getCartItems, adjustQuantity, checkout, addToCart, removeFromCart};
+module.exports = {getCartInfo, adjustQuantity, checkout, addToCart, removeFromCart};

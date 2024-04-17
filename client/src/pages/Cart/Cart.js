@@ -4,22 +4,15 @@ import {React, useEffect, useState} from 'react';
 import './Cart.css';
 import axios from 'axios';
 
-const fakeItem = {
-    itemID: 69,
-    itemName: "Fake Cat Food",
-    quantity: 397,
-    price: 51.5,
-}
-
 function CartItem({id, name, quantity, price, deleteSelf}) {
     const [itemCount, setItemCount] = useState(quantity)
 
     const updateQuantity = (e) => {
-        axios.post('http://localhost:9000/cart/adjustQuantity', { itemID: id, newQuantity: e.target.value }); //handle bad inputs at some point. 
         if (parseInt(e.target.value) === 0) {
             // Still need to call this so backend deletes it. Probably hackable lol
             deleteSelf()
         } else {
+            axios.post('http://localhost:9000/cart/adjustQuantity', { itemID: id, newQuantity: e.target.value }); //handle bad inputs at some point. 
             setItemCount(e.target.value)
         }
     }
@@ -51,31 +44,47 @@ function CartPage({}) {
 
     // Retrieves all the items in a user's cart in the form of:
     /*
-    [ {
-        itemID:
-        itemName:
-        quantity:
-        price:
-    } ]
+    res {
+        items: [ {
+            itemID:
+            itemName:
+            quantity:
+            price:
+        } ]
+        subtotal:
+        tax:
+        total:
+    }
     */
-    const [cartItems, setCartItems] = useState([fakeItem, fakeItem])
+    const [cartItems, setCartItems] = useState([])
+    const [moneyInfo, setMoneyInfo] = useState({
+        subtotal: 0.0,
+        tax: 0.0,
+        total: 0.0
+    })
 
     useEffect(() => {
-        axios.get('http://localhost:9000/cart/cartItems').then(res => {
+        axios.get('http://localhost:9000/cart/cartInfo').then(res => {
+            console.log(res.data);
             if (res.data) {
-                setCartItems(res.data);
+                setCartItems(res.data.items);
+                setMoneyInfo({ subtotal: res.data.subtotal, tax: res.data.tax, total: res.data.total });
+            } else {
+                console.log("Failed to fetch cart items");
             }
-            console.log("Failed to fetch cart items");
-            setCartItems([fakeItem, fakeItem]);
         })
     }, [])
 
     // Deletes an item. Called when quantity is edited to zero
     const deleteItem = (id) => {
         setCartItems((items) => items.filter(item => item.itemID !== id))
-        axios.post('http://localhost:9000/cart/removeFromCart', id)
+        axios.post('http://localhost:9000/cart/removeFromCart', { productID: id })
             .then(res => {
-                console.log('Backend response from removing item from cart: ' + res.data);
+                if(res.data) {
+                    setMoneyInfo(res.data);
+                } else {
+                    console.log("failed to remove product from cart");
+                }
             })
             .catch(err => console.log(err));
     }
@@ -119,13 +128,14 @@ function CartPage({}) {
                     <div id="transaction-info">
                         <div id="subtotal">
                             <div id="sub-name">Subtotal:</div>
-                            <div id="sub-amt">Field Value</div>
+                            <div id="sub-amt">{"$" + moneyInfo.subtotal}</div>
                         </div>
                         <div id="tax">
                             <div id="tax-name">Tax:</div>
-                            <div id="tax-amt">Field Value</div>
+                            <div id="tax-amt">{"$" + moneyInfo.tax}</div>
                         </div>
                         <div id="total">Total:</div>
+                        <div id="total-amt">{"$" + moneyInfo.total}</div>
                     </div>
                     <form id="checkout-form">
                         <div id="card-info">

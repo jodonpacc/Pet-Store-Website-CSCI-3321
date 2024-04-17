@@ -47,9 +47,10 @@ class CartInfo {
     // Removes a product from the cart
     // Returns true if successful, false otherwise
     removeItem(product_id) {
-        if(this.cartmap.has(product_id) && this.cartmap.delete(product_id)) {
+        const price = this.cartmap.has(product_id) ? this.cartmap.get(product_id).price : 0.0;
+        if(this.cartmap.delete(product_id)) {
             // Update money fields
-            this.subtotal = parseFloat(formatterUSD.format(this.subtotal - parseFloat(this.cartmap.get(product_id).price)));
+            this.subtotal = parseFloat(formatterUSD.format(this.subtotal - parseFloat(price)));
             this.tax = parseFloat(formatterUSD.format(this.subtotal * 0.0825));
             this.total = parseFloat(formatterUSD.format(this.subtotal + this.tax));
             return true;

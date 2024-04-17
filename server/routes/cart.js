@@ -15,8 +15,9 @@ router.use(cors({
 }));
 
 // cartModel.getCartItems()
-router.get('/cartItems', (req, res) => {
-    return res.json(cartModel.getCartItems(req.session));
+router.get('/cartInfo', (req, res) => {
+    console.log(req.session.cart);
+    return res.json(cartModel.getCartInfo(req.session));
 });
 
 // cartModel.adjustQuantity()
@@ -29,16 +30,18 @@ router.post('/checkout', (req, res) => {
     res.send([]);
 });
 
-// cartModel.addToCart()
+// cartModel.addToCart() 
+// Expects req.body.productID
 router.post('/addToCart', (req, res) => {
-    cartModel.addToCart(req.session, req.body.productId, (result) => {
+    cartModel.addToCart(req.session, req.body.productID, (result) => {
         return res.json(result);
     });
 });
 
 // cartModel.removeFromCart()
+// Expects req.body.productID
 router.post('/removeFromCart', (req, res) => {
-    res.send([]);
+    return res.json(cartModel.removeFromCart(req.session, req.body.productID));
 });
 
 module.exports = router;
