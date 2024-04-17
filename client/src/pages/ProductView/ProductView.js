@@ -1,59 +1,21 @@
-import defaultProductImg from '../../assets/images/cat.png';
 import fullStarImg from '../../assets/images/fullStar.png';
 import halfStarImg from '../../assets/images/halfStar.png';
 import "./ProductView.css"
 import NavigationBar from "../../components/NavigationBar";
 import axios from 'axios'
-import { React, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { getUserInfo } from '../../helperFunctionality/sessionInfo'
+import AuditTrail from '../../components/AuditTrail';
 
-
-
-function ProductView(productID) {
+function ProductView() {
     // This line must be present on every main page so that session information is circulated properly
     axios.defaults.withCredentials = true;
+    const productId = useParams().productId;
 
-    return (<PlaceholderPage/>);
+    const [productData, setProduct] = useState({});
+    const [isAdmin, setIsAdmin] = useState(false);
 
-    // console.log("routing works");
-    // axios.get('http://localhost:9000/product', {
-    //     params: {
-    //         productID: productID
-    //     }
-    // })
-    //     .then((productData) => {
-    //         const name = productData.title
-    //         const description = productData.description
-    //         const price = productData.price
-    //         // const productImg = productData.img_filename
-    //         const productImg = defaultProductImg
-    //         const rating = productData.rating
-
-    //         return (
-    //             <div>
-    //                 <NavigationBar></NavigationBar>
-    //                 <div class="PVcontainer">
-    //                     <div class="PVleft">
-    //                         <img src={productImg} class="PVimg" alt="Product"></img>
-    //                         <div class="PVprice">${price}</div>
-    //                     </div>
-    //                     <div class="PVright">
-    //                         <h1 id="PVtitle">{name}</h1>
-    //                         <div id="PVtitle-line"></div>
-    //                         {starGenerator(rating)}
-    //                         <p><span class="product-description">Description: </span>{description}</p>
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //         );
-    //     })
-    //     .catch(error => {
-    //         // Handle error
-    //         console.log("can't find product")
-    //         return (<><p>NEED TO MAKE ERROR PAGE</p></>);
-    //     });
-} 
-
-function PlaceholderPage({id}) {
     // Fetch product info from backend in the form of:
     /* {
         title:
@@ -62,37 +24,56 @@ function PlaceholderPage({id}) {
         img_filename:
         rating:
     } */
-    const [info, setInfo] = useState(fetch('/product?id=' + id).then(data => {
-        if (data) { // convert img_filename to image here
-            return {...data, image: data.img_filename};
-        }
-        console.log("Failed to fetch product info with id " + id)
-        return null;
-    })) 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.post('http://localhost:9000/product', { prod_id: productId });
+                setProduct(response.data); // Store the fetched data in state
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
 
-    /*
-    const name = "Product Title"
-    const description = "Placeholder description"
-    const price = 39.99
-    const productImg = defaultProductImg
-    const rating = 4.5
-    */
+        fetchData(); // Call the fetchData function
+
+        // Figures out if user is admin or not
+        getUserInfo((res) => {
+            if(res.valid) {
+                // If res.is_admin is true, the audit log will display
+                setIsAdmin(res.is_admin);
+            } else {
+                setIsAdmin(false);
+            }
+        });
+    }, []);
+    
+    const addToCart = (event) => {
+        axios.post('http://localhost:9000/product/addToCart', productId)
+            .then(res => {
+                console.log(res)
+                window.location.href = 'http://localhost:3000/Cart'
+            })
+            .catch(err => console.log(err));
+    };
 
     return (
         <div>
             <NavigationBar></NavigationBar>
             <div class="PVcontainer">
                 <div class="PVleft">
-                    <img src={info.image} class="PVimg" alt="Product"></img>
-                    <div class="PVprice">${info.price}</div>
+                    <img src={"../../assets/images/" + productData.img_filename} class="PVimg" alt="Product"></img>
+                    <div class="PVprice">${productData.price}</div>
                 </div>
                 <div class="PVright">
-                    <h1 id="PVtitle">{info.title}</h1>
+                    <h1 id="PVtitle">{productData.title}</h1>
                     <div id="PVtitle-line"></div>
-                    {starGenerator(info.rating)}
-                    <p><span class="product-description">Description: </span>{info.description}</p>
+                    {starGenerator(productData.rating)}
+                    <p><span class="product-description">Description: </span>{productData.description}</p>
+                    <p><span class="product-description">In stock: </span>{productData.quantity} product(s)</p>
+                    <button id="addToCartBtn" onClick={addToCart}>Add to Cart</button>
                 </div>
             </div>
+            {isAdmin && <AuditTrail id={productId}/>}
         </div>
     );
 }
@@ -100,11 +81,13 @@ function PlaceholderPage({id}) {
 function starGenerator(rating) {
     const fullStarNum = Math.floor(rating);
     const stars = []
+    //each key is just a unique id for a star because console was yelling at us
     for (let i = 0; i < fullStarNum; i++) {
-        stars.push(<img src={fullStarImg} class="PVstar"></img>)
+        stars.push(<img key={i} src={fullStarImg} class="PVstar"></img>)
     }
+    //if product has half a start at the end
     if ((rating - fullStarNum) >= 0.5) {
-        stars.push(<img src={halfStarImg} class="PVstar" id="PVhalf-star"></img>)
+        stars.push(<img key={fullStarNum + 1} src={halfStarImg} class="PVstar" id="PVhalf-star"></img>)
     }
     return (
         <div id="star-container">

@@ -18,27 +18,22 @@ router.use(cors({
 router.use(express.json());
 
 // productModel.getProductInfo()
-router.post('/', function(req, res) {
+router.post('/', function (req, res) {
+    console.log(req.body.prod_id);
     productModel.getProductInfo(req.body.prod_id, (err, result) => {
-        if(err) return res.json(err);
+        if (err) return res.json(err);
         return res.json(result);
     });
 })
 
 // productModel.getAllProducts()
-router.get('/allProducts', function(req, res) {
-    // Testing
-    cartModel.addToCart(req.session, 2, (result) => {
-        console.log(req.session);
-        console.log(req.session.cart.entries[0]);
-        console.log(req.session.cart.entries[0][1]);
-    })
-
+router.get('/allProducts', function (req, res) {
     productModel.getAllProducts((err, result) => {
-        if(err) return res.json(err);
+        if (err) return res.json(err);
         return res.json(result);
     })
 });
+
 
 // productModel.getAvailableProducts()
 router.get('/availableProducts', function(req, res) {
