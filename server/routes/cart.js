@@ -16,7 +16,7 @@ router.use(cors({
 
 // cartModel.getCartItems()
 router.get('/cartItems', (req, res) => {
-    res.send([]);
+    return res.json(cartModel.getCartItems(req.session));
 });
 
 // cartModel.adjustQuantity()
@@ -31,7 +31,9 @@ router.post('/checkout', (req, res) => {
 
 // cartModel.addToCart()
 router.post('/addToCart', (req, res) => {
-    res.send([]);
+    cartModel.addToCart(req.session, req.body.productId, (result) => {
+        return res.json(result);
+    });
 });
 
 // cartModel.removeFromCart()

@@ -13,7 +13,13 @@ returns List [ {
 */
 function getCartItems(session) {
     if(session.cart) {
-
+        let ret = [];
+        for(let i = 0; i<session.cart.entries; i++) {
+            const entry = session.cart.entries[i];
+            ret.push({itemID: entry[0], itemName: entry[1].title, quantity: entry[1].quantity, price: entry[1].price });
+        }
+        console.log(ret);
+        return ret;
     } else {
         // if user has no cart, return empty list []
         return [];
@@ -59,7 +65,7 @@ takes in {
 }
 returns true for success, false for not success
 */
-function addToCart(session, productID) {
+function addToCart(session, productID, callback) {
     // Create a new CartInfo with cart info from session
     // If session.cart is undefined, an empty CartInfo will be created
     let cartInfo = new CartInfo(session.cart);
@@ -69,20 +75,26 @@ function addToCart(session, productID) {
     db.query(sql, [productID])
         .then(result => {
             prod_info = result.rows[0];
+            console.log(prod_info.removed);
             if(!prod_info.removed) {
                 cartInfo.addItem(prod_info.title, prod_info.price, productID);
 
                 // Store the CartInfo in session, but replace cartmap with entries, an Array form of cartmap (explained in CartInfo.js constructor)
                 session.cart = {entries: Array.from(cartInfo.cartmap.entries()), subtotal: cartInfo.subtotal, tax: cartInfo.tax, total: cartInfo.total };
-                console.log("session.cart after adding item to cart: " + session.cart);
+                console.log("Session after adding product ID " + productID + " to cart:");
+                console.log(session.cart);
 
                 // return successful
+                callback(true);
             } else {
                 // return you cant do that, product is not available
+                callback(false);
             }
         })
         .catch(err => {
             // return error
+            console.log(err);
+            callback(false);
         })
 }
 

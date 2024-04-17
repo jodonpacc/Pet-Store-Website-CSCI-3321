@@ -35,7 +35,7 @@ class CartInfo {
         if(this.cartmap.has(product_id)) {
             this.cartmap.get(product_id).quantity += 1;
         } else {
-            map.set(productID, new ProductInfo(title, price, 1));
+            this.cartmap.set(product_id, new ProductInfo(title, price, 1));
         }
 
         // Update money fields

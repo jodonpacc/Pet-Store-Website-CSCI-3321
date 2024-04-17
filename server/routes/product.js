@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const cors = require('cors');
 const productModel = require('../models/productModel.js');
+const cartModel = require('../models/cartModel.js');
 
 // For session stuff
 const sess = require("../session.js").sessionSetup;
@@ -26,6 +27,13 @@ router.post('/', function(req, res) {
 
 // productModel.getAllProducts()
 router.get('/allProducts', function(req, res) {
+    // Testing
+    cartModel.addToCart(req.session, 2, (result) => {
+        console.log(req.session);
+        console.log(req.session.cart.entries[0]);
+        console.log(req.session.cart.entries[0][1]);
+    })
+
     productModel.getAllProducts((err, result) => {
         if(err) return res.json(err);
         return res.json(result);
