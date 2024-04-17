@@ -4,8 +4,11 @@ import WrenchIcon from "../assets/images/wrenchIcon.png"
 import { React, useEffect, useState } from 'react';
 import { getUserInfo } from '../helperFunctionality/sessionInfo'
 import axios from 'axios';
+import Search from "./Search";
 
-function NavigationBar() {
+// search is the list of products, or whatever you want to search through.
+// search should be left null/undefined (just unset whenever the component is used) if it shouldn't be used on the page.
+function NavigationBar({search}) {
 
     // Keeps track of username and admin status for displaying correct buttons
     const [userInfo, setUserInfo] = useState({
@@ -48,7 +51,7 @@ function NavigationBar() {
             <div id="nav-sections"> 
                 <div id="left-items">
                     <div className="logo"><a id="logo-link" href='/home'>PetSmarter</a></div>
-                    <input type="text" id="search-bar" placeholder="Search..." maxLength="40"></input>
+                    {search && <Search items={search}/>}
                     {userInfo.isAdmin && <button id="admin-button" onClick={() => gotoPage('admin')}><img id="admin-icon" src={WrenchIcon} alt="Wrench Icon"/> Admin</button>}
                 </div>
                 <div id="right-items">
