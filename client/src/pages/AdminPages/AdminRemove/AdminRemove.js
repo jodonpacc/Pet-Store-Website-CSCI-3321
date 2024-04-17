@@ -62,12 +62,12 @@ function AdminRemove() {
     return (
         <div>
             <NavigationBar/>
-            <h1>Admin Remove/Readd Product Listing Page</h1>
+            <h1>Admin Remove/ReAdd Product Listing Page</h1>
             <ul>
                 {products.map((item, idx) => (
                     <AdminProduct key={idx} id={item.product_id} name={item.title} description={item.description} price={item.price} 
                     quantity={item.quantity} img={item.img_filename} removed={item.removed} buttonFunction={() => promptPassword(item.product_id, item.removed)} 
-                    buttonName={item.removed ? "Readd" : "Remove"}/>
+                    buttonName={item.removed ? "ReAdd" : "Remove"}/>
                 ))}
             </ul>
 

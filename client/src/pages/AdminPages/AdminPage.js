@@ -23,7 +23,7 @@ function AdminPage() {
                 </div>
                 <div id="admin-function-group">
                     <img id="admin-function-icon" src={RemoveIcon} alt="Remove Icon"/>
-                    <button id="remove-page-button" onClick={() => gotoAdminPage("remove")}>Remove/Readd Page</button>                
+                    <button id="remove-page-button" onClick={() => gotoAdminPage("remove")}>Remove/ReAdd Page</button>                
                 </div>
                 <div id="admin-function-group">
                     <img id="admin-function-icon" src={EditIcon} alt="Edit Icon"/>
