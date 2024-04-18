@@ -18,7 +18,7 @@ import EditProduct from './pages/AdminPages/AdminEdit/EditProduct';
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Login />,
+    element: <HomePage />,
     errorElement: <ErrorPage />,
   },
   {

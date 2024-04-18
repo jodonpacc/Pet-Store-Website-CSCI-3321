@@ -18,10 +18,11 @@ function getCartInfo(session) {
             const entry = session.cart.entries[i];
             ret.push({itemID: entry[0], itemName: entry[1].title, quantity: entry[1].quantity, price: entry[1].price });
         }
+        // return the cart information
+        return { items: ret, subtotal: session.cart.subtotal, tax: session.cart.tax, total: session.cart.total };
+    } else {
+        return { items: ret, subtotal: 0.0, tax: 0.0, total: 0.0 };
     }
-
-    // return the cart information
-    return { items: ret, subtotal: session.cart.subtotal, tax: session.cart.tax, total: session.cart.total };
 }
 
 /*
