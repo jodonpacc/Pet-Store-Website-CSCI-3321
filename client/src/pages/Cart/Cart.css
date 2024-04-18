@@ -135,6 +135,7 @@
 
 .checkout-input::placeholder, .checkout-input-sm::placeholder {
     color: #FFFFFF;
+    opacity: 0.5;
 }
 
 .checkout-input:focus, .checkout-input-sm:focus {
@@ -158,4 +159,12 @@
     outline-style: solid;
     outline-color: #2D3142;
     outline-width: 3px;
+}
+
+.checkout-input-sm:hover, .checkout-input:hover {
+    background-color: #3a3e52;
+}
+
+#checkout-button:hover {
+    background-color: #e38e68;
 }

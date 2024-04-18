@@ -18,7 +18,7 @@ router.use(express.json());
 
 // productModel.getProductInfo()
 router.post('/', function (req, res) {
-    console.log(req.body.prod_id);
+    console.log("Getting product info for product_id: " + req.body.prod_id)
     productModel.getProductInfo(req.body.prod_id, (err, result) => {
         if (err) return res.json(err);
         return res.json(result);
@@ -27,6 +27,7 @@ router.post('/', function (req, res) {
 
 // productModel.getAllProducts()
 router.get('/allProducts', function (req, res) {
+    console.log("getting all product info")
     productModel.getAllProducts((err, result) => {
         if (err) return res.json(err);
         return res.json(result);
@@ -43,7 +44,7 @@ router.get('/availableProducts', function(req, res) {
 })
 
 // productModel.addToCart()
-router.get('/addToCart', (req, res) => {
+router.post('/addToCart', function (req, res) {
     res.send([]);
 
 });

@@ -29,7 +29,7 @@ function CartItem({id, name, quantity, price, deleteSelf}) {
         <div className="cart-item">
             <div className="item-fields">
                 <div className="prod-name">{name}</div>
-                x<input className="quantity" type="number" value={itemCount} onChange={updateQuantity}></input>
+                <input className="quantity" type="number" value={itemCount} onChange={updateQuantity}></input>
                 <div className="price">${price}</div>
             </div>
             <div className="cart-fake-hr"></div>
