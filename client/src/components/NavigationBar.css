@@ -96,3 +96,18 @@
     outline-color: #EF8354;
     outline-width: 3px;
 }
+
+#admin-button:hover {
+    background-color: #BFC0C0;
+    border: solid;
+    border-width: 5px;
+    border-color: #EF8354;
+}
+
+.login-out-button:hover {
+    background-color: #BFC0C0;
+    border: solid;
+    border-width: 5px;
+    border-color: #2D3142;
+    color: #2D3142;
+}

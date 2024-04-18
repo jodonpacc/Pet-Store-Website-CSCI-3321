@@ -84,3 +84,11 @@ body {
     outline-color: #FFFFFF;
     outline-width: 5px;
 }
+
+.login-button:hover, 
+.signup-button:hover {
+    background-color: #2D3142;
+    border: solid;
+    border-width: 5px;
+    border-color: #EF8354;
+}

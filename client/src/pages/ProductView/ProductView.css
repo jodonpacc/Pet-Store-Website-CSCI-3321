@@ -90,3 +90,10 @@ body {
     flex-direction: row;
     flex-wrap: nowrap;
 }
+
+#addToCartBtn:hover {
+    background-color: #BFC0C0;
+    border: solid;
+    border-width: 5px;
+    border-color: #EF8354;
+}

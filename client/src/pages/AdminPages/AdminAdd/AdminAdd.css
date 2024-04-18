@@ -45,3 +45,11 @@
     outline-width: 3px;
     outline-color: #EF8354;
 }
+
+#add-submit:hover {
+    background-color: #BFC0C0;
+    border: solid;
+    border-width: 5px;
+    border-color: #2D3142;
+    color: #2D3142;
+}

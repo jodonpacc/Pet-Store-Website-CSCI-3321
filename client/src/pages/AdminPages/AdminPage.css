@@ -39,3 +39,11 @@
     outline-color: #EF8354;
     outline-width: 5px;
 }
+
+#add-page-button:hover, #remove-page-button:hover, #edit-page-button:hover {
+    background-color: #BFC0C0;
+    border: solid;
+    border-width: 5px;
+    border-color: #2D3142;
+    color: #2D3142;
+}
