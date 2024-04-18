@@ -36,7 +36,7 @@ app.use('/product', product);
 // Use admin.js route in ./routes for /admin
 app.use('/admin', admin)
 
-app.use('/cartapi', cart);
+app.use('/cart', cart);
 
 app.use('/home', home);
 

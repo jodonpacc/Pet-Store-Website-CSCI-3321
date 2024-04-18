@@ -75,15 +75,4 @@ function getAvailableProducts(callback) {
         });
 }
 
-/*
-Adds one of a product to the user's cart
-takes in {
-    productID:
-}
-returns true for success, false for not success
-*/
-function addToCart(username, productID) {
-
-}
-
-module.exports = {getProductInfo, getAllProducts, getAvailableProducts, addToCart};
+module.exports = {getProductInfo, getAllProducts, getAvailableProducts};

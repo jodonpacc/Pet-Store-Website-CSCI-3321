@@ -15,18 +15,32 @@ router.use(cors({
 }));
 
 // cartModel.getCartItems()
-router.get('/cartItems', (req, res) => {
-    res.send([]);
+router.get('/cartInfo', (req, res) => {
+    return res.json(cartModel.getCartInfo(req.session));
 });
 
 // cartModel.adjustQuantity()
-router.get('/adjustQuantity', (req, res) => {
-    res.send([]);
+router.post('/adjustQuantity', (req, res) => {
+    return res.json(cartModel.adjustQuantity(req.session, req.body.itemID, req.body.newQuantity));
 });
 
 // cartModel.checkout()
 router.post('/checkout', (req, res) => {
     res.send([]);
+});
+
+// cartModel.addToCart() 
+// Expects req.body.productID
+router.post('/addToCart', (req, res) => {
+    cartModel.addToCart(req.session, req.body.productID, (result) => {
+        return res.json(result);
+    });
+});
+
+// cartModel.removeFromCart()
+// Expects req.body.productID
+router.post('/removeFromCart', (req, res) => {
+    return res.json(cartModel.removeFromCart(req.session, req.body.productID));
 });
 
 module.exports = router;

@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const cors = require('cors');
 const productModel = require('../models/productModel.js');
+const cartModel = require('../models/cartModel.js');
 
 // For session stuff
 const sess = require("../session.js").sessionSetup;
@@ -18,7 +19,6 @@ router.use(express.json());
 
 // productModel.getProductInfo()
 router.post('/', function (req, res) {
-    console.log(req.body.prod_id);
     productModel.getProductInfo(req.body.prod_id, (err, result) => {
         if (err) return res.json(err);
         return res.json(result);
@@ -41,11 +41,5 @@ router.get('/availableProducts', function(req, res) {
         return res.json(result);
     })
 })
-
-// productModel.addToCart()
-router.get('/addToCart', (req, res) => {
-    res.send([]);
-
-});
 
 module.exports = router;
