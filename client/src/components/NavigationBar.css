@@ -10,6 +10,10 @@
     padding: 5px;
 }
 
+#cart-icon {
+    cursor: pointer;
+}
+
 #left-items {
     display: flex;
     gap: 15px;
@@ -37,6 +41,7 @@
     padding-bottom: 8px;
     font-size: larger;
     font-weight: bold;
+    cursor: pointer;
 }
 
 #admin-button:focus {
@@ -83,6 +88,7 @@
     color: #FFFFFF;
     font-size: larger;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .login-out-button:focus {

@@ -152,6 +152,7 @@
     color: #2D3142;
     font-size: x-large;
     font-weight: bolder;
+    cursor: pointer;
 }
 
 #checkout-button:focus {

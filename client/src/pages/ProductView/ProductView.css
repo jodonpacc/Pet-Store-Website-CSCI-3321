@@ -54,6 +54,7 @@ body {
     background-color: #EF8354;
     font-size: large;
     font-weight: bold;
+    cursor: pointer;
 }
 
 #addToCartBtn:focus {

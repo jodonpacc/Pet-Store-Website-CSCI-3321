@@ -184,7 +184,8 @@ function CartPage({}) {
                         </div>
                         <input type="text" className="checkout-input" placeholder="Credit Card #" required="required"></input>
                         <input type="text" className="checkout-input" placeholder="Address, Zip, City, State" required="required"></input>
-                        <input type="submit" id="checkout-button" value="Purchase" onClick={checkout}></input>
+                        <input type="submit" id="checkout-button" value="Purchase" onClick={checkout}></input>        window.location.href = "/" + page;
+    };
                     </form>
                 </div>
             </div>

@@ -1,7 +1,8 @@
 import ProductCard from "../../components/ProductCard";
 import React, { useState, useEffect } from 'react';
-import CategoryCard from "../../components/CategoryCard";
+// import CategoryCard from "../../components/CategoryCard";
 import NavigationBar from "../../components/NavigationBar";
+import { getUserInfo } from '../../helperFunctionality/sessionInfo'
 import './Home.css'
 import axios from 'axios';
 
@@ -13,16 +14,24 @@ function HomePage({ }) {
 
     // useEffect make the Axios request when the component mounts, fetching all the data
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchData = async (route) => {
             try {
-                const response = await axios.get('http://localhost:9000/product/allProducts');
+                const response = await axios.get('http://localhost:9000/product/' + route);
                 setProducts(response.data); // Store the fetched data in state
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
 
-        fetchData(); // Call the fetchData function
+        getUserInfo((res) => {
+            if(res.valid && res.is_admin) {
+                // display all products including those that have been removed
+                fetchData('allProducts');
+            } else {
+                // display only available products
+                fetchData('availableProducts');
+            }
+        });
     }, []);
     console.log(products)
 

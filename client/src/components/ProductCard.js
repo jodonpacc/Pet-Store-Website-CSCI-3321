@@ -5,15 +5,16 @@ function ProductCard({ id, imgname, title, destination }) {
 
     const imglink = "../assets/images/" + imgname
     const gotoDest = (e, destination) => {
+        e.preventDefault();
         window.location.href = destination;
     }
 
     return (
-        <div className="product-card" id={id}>
+        <div className="product-card" id={id} onClick={(e) => gotoDest(e, destination)}>
             <div className="image-backer">
                 <img src={imglink}></img>
             </div>
-            <div className="product-card-title" onClick={(e) => gotoDest(e, destination)}>{title}</div>
+            <div className="product-card-title">{title}</div>
         </div>
     );
 }

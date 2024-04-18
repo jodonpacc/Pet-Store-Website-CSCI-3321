@@ -2,6 +2,7 @@ import { React, useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Popup from '../../../components/Popup';
+import NavigationBar from "../../../components/NavigationBar";
 
 function EditProduct() {
     axios.defaults.withCredentials = true;
@@ -78,6 +79,7 @@ function EditProduct() {
 
     return (productExists) ? (
         <div>
+            <NavigationBar/>
             <h1>Editing Product ID: {id}</h1>
             <p>Leave a field blank to retain its original value.</p>
             {/* Fields to keep track of - Title, Description, Price, Quantity, Image filename. */}
@@ -128,7 +130,11 @@ function EditProduct() {
                 </form>
             </Popup>
         </div>
-    ) : <p>No product with this product ID ({id}) exists.</p>;
+    ) : 
+    <div>
+        <NavigationBar/>
+        <p>No product with this product ID ({id}) exists.</p>;
+    </div>
 }
 
 export default EditProduct;

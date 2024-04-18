@@ -59,6 +59,7 @@ body {
     height: 80px;
     font-size: 40px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .login-input,

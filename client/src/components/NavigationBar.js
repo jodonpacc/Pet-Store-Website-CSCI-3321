@@ -55,7 +55,7 @@ function NavigationBar({search}) {
                     {userInfo.isAdmin && <button id="admin-button" onClick={() => gotoPage('admin')}><img id="admin-icon" src={WrenchIcon} alt="Wrench Icon"/> Admin</button>}
                 </div>
                 <div id="right-items">
-                    <img src={CartIcon} onClick={() => gotoPage('Cart')} alt="Cart Icon" style={{width: 40, height: 40}}></img>
+                    <img src={CartIcon} id="cart-icon" onClick={() => gotoPage('Cart')} alt="Cart Icon" style={{width: 40, height: 40}}></img>
                     {userInfo.isLoggedIn
                         ? <button className="login-out-button" onClick={logOut}>Log Out</button>
                         : <button className="login-out-button" onClick={() => gotoPage('login')}>Log In</button>}
