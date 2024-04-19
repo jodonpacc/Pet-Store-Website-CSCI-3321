@@ -24,6 +24,7 @@ function getProductInfo (id, callback) {
             callback(null, res.rows[0]);
         })
         .catch(err => {
+            console.log(err);
             callback(err, null);
         })
 }
@@ -47,6 +48,7 @@ function getAllProducts(callback) {
             callback(null, result.rows);
         })
         .catch(err => {
+            console.log(err);
             callback(err, null);
         });
 }
@@ -71,6 +73,7 @@ function getAvailableProducts(callback) {
             callback(null, result.rows);
         })
         .catch(err => {
+            console.log(err);
             callback(err, null);
         });
 }

@@ -81,11 +81,11 @@ function addToCart(session, productID, callback) {
     let cartInfo = new CartInfo(session.cart);
     
     // Retreive title, price, and removed for the given product
-    let sql = "SELECT title, price, removed FROM Product WHERE product_id = $1";
+    let sql = "SELECT title, price, quantity, removed FROM Product WHERE product_id = $1";
     db.query(sql, [productID])
         .then(result => {
             prod_info = result.rows[0];
-            if(!prod_info.removed) {
+            if(!prod_info.removed && prod_info.quantity > 0) {
                 cartInfo.addItem(prod_info.title, prod_info.price, productID);
 
                 // Store the CartInfo in session, but replace cartmap with entries, an Array form of cartmap (explained in CartInfo.js constructor)
@@ -94,8 +94,9 @@ function addToCart(session, productID, callback) {
                 // return successful
                 callback("Successfully added product to cart.");
             } else {
-                // return you cant do that, product is not available
-                callback("This product is unavailable.");
+                // return you cant do that, product is not available or out of stock
+                const message = prod_info.removed ? "This product is unavailable." : "This product is out of stock.";
+                callback(message);
             }
         })
         .catch(err => {

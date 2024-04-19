@@ -21,6 +21,7 @@ function authenticateUser(username, password, callback) {
             }
         })
         .catch(err => {
+            console.log(err);
             callback(err, false, "The following error occurred while authenticating the user: " + err, false);
         });
 }
@@ -51,7 +52,10 @@ callback takes an object as a parameter with the following fields: {
 */
 function login(username, password, session, callback) {
     authenticateUser(username, password, (err, succ, mess, adm) => {
-        if(err) callback({ message: mess, success: false });
+        if(err) {
+            console.log(err);
+            callback({ message: mess, success: false });
+        }
 
         if(succ) {
             session.username = username;
@@ -90,6 +94,7 @@ function createAccount(username, password, callback) {
             }
         })
         .catch(err => {
+            console.log(err);
             callback(err);
         });
 }

@@ -29,7 +29,10 @@ callback takes in an object parameter with the following fields {
 function addListing(username, formData, file, callback) {
     // Authenticate user as admin, sending req.session.username as username and req.body.password as password
     authenticateUser(username, formData.password, (err, succ, mess, adm) => {
-        if(err) callback({ message: mess, success: false });
+        if(err) {
+            console.log(err);
+            callback({ message: mess, success: false });
+        }
 
         if(succ && adm) {
             // Use default img unless image is supplied
@@ -48,6 +51,7 @@ function addListing(username, formData, file, callback) {
                     callback({ message: "Product listing added successfully", success: true, dbResult: result });
                 })
                 .catch(err2 => {
+                    console.log(err2);
                     callback({ message: "One or more of your entries is invalid.", success: false, dbResult: err2 });
                 });
         } else {
@@ -79,7 +83,10 @@ callback takes in an object parameter with the following fields {
 function setRemovedListing(username, password, prod_id, removing, callback) {
     // Authenticate user as admin, sending req.session.username as username and req.body.password as password
     authenticateUser(username, password, (err, succ, mess, adm) => {
-        if(err) callback({ message: mess, success: false });
+        if(err) {
+            console.log(err);
+            callback({ message: mess, success: false });
+        }
 
         if(succ && adm) {
             // Remove product listing
@@ -92,8 +99,9 @@ function setRemovedListing(username, password, prod_id, removing, callback) {
                     addAdminChange(changeType, username, prod_id);
                     callback({ message: "Product listing changed successfully. (Action: " + changeType + ")", success: true, dbResult: result });
                 })
-                .catch(err3 => {
-                    callback({ message: "There was an unexpected error.", success: false, dbResult: err3 });
+                .catch(err2=> {
+                    console.log(err2);
+                    callback({ message: "There was an unexpected error.", success: false, dbResult: err2 });
                 });
         } else {
             let denyMessage = "Access Denied: ";
@@ -134,12 +142,18 @@ callback takes in an object parameter with the following fields {
 function editListing(username, formData, file, callback) {
     // Authenticate user as admin, sending req.session.username as username and req.body.password as password
     authenticateUser(username, formData.password, (err, succ, mess, adm) => {
-        if(err) callback({ message: mess, success: false });
+        if(err) {
+            console.log(err);
+            callback({ message: mess, success: false });
+        }
 
         if(succ && adm) {
             // Get original values of given product id
             getProductInfo(formData.id, (err2, productInfo) => {
-                if(err2) callback({ message: err2, success: false });
+                if(err2) {
+                    console.log(err2);
+                    callback({ message: err2, success: false });
+                }
 
                 if(productInfo) {
                     // Edit with new values, unless they are empty, then use original value.
@@ -165,6 +179,7 @@ function editListing(username, formData, file, callback) {
                             callback({ message: "Product listing edited successfully", success: true, dbResult: result });
                         })
                         .catch(err3 => {
+                            console.log(err3);
                             callback({ message: "There was an unexpected error.", success: false, dbResult: err3 });
                         });
                 } else {
@@ -214,6 +229,7 @@ function getAuditTrail(productID, callback) {
             callback(null, result.rows);
         })
         .catch(err => {
+            console.log(err);
             callback(err, null);
         });
 }
