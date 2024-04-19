@@ -30,7 +30,7 @@ function Search({items}) {
             {results.length > 0 && 
                 <div className="dropdown">
                     {results.map((item) => { return (
-                        <div className="result" key={item.id} onClick={(e) => navToProduct(item.id)}>
+                        <div className="result" key={item.product_id} onClick={(e) => navToProduct(item.product_id)}>
                             {item.title}
                             <hr></hr>
                         </div> 
