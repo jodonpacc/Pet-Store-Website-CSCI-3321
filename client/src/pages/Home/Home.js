@@ -53,7 +53,7 @@ function HomePage({ }) {
                     {products.map((product, index) => (
                         //key is just something React requires
                         //each product card leads the user to its corresponding page
-                        <ProductCard key={index} imgname={product.img_filename} title={product.title} destination={"/product/" + product.product_id} />
+                        <ProductCard key={index} imgname={product.img_filename} title={product.title} destination={"/product/" + product.product_id} removed={product.removed}/>
                     ))}
                 </div>
             </div>

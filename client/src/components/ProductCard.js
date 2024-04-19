@@ -1,7 +1,7 @@
 // The orange rounded rectangle with product image and product title seen on the homepage of the mockup
 import "./Card.css"
 
-function ProductCard({ id, imgname, title, destination }) {
+function ProductCard({ id, imgname, title, destination, removed }) {
 
     const imglink = "../assets/images/" + imgname
     const gotoDest = (e, destination) => {
@@ -11,7 +11,7 @@ function ProductCard({ id, imgname, title, destination }) {
 
     return (
         <div className="product-card" id={id} onClick={(e) => gotoDest(e, destination)}>
-            <div className="image-backer">
+            <div className="image-backer" style={removed ? {backgroundColor: 'grey'} : {}}>
                 <img src={imglink}></img>
             </div>
             <div className="product-card-title">{title}</div>

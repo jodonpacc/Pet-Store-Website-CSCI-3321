@@ -3,6 +3,7 @@ import NavigationBar from "../../../components/NavigationBar";
 import axios from 'axios';
 import AdminProduct from '../../../components/AdminProduct';
 import Popup from '../../../components/Popup';
+import '../AdminListings.css'
 
 function AdminRemove() {
     axios.defaults.withCredentials = true;
@@ -72,7 +73,7 @@ function AdminRemove() {
             </ul>
 
             <Popup isOpen={isOpen} setOpen={setOpen}>
-                <p>Are you sure you want to remove this product listing? Please enter your administrator password to confirm.</p>
+                <p>Are you sure you want to { popupInfo.removing ? 'remove' : 're-add' } this product listing? Please enter your administrator password to confirm.</p>
                 <form onSubmit={deleteItem}>
                     <label htmlFor="password">Password:*</label>
                     <input id="password" type="password" required="required" minLength="8" maxLength="20" 

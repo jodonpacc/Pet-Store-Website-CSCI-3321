@@ -1,0 +1,5 @@
+/* Used for the AdminRemove and AdminEdit pages as they are identical in layout */
+
+li {
+    margin-top: 32px;
+}

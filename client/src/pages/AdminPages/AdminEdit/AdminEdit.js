@@ -2,6 +2,7 @@ import { React, useState, useEffect } from 'react';
 import NavigationBar from "../../../components/NavigationBar";
 import axios from 'axios';
 import AdminProduct from '../../../components/AdminProduct';
+import '../AdminListings.css'
 
 function AdminEdit() {
     axios.defaults.withCredentials = true;
