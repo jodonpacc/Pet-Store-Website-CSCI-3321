@@ -52,7 +52,9 @@ function ProductView() {
             .then(res => {
                 console.log(res)
                 alert(res.data);
-                window.location.href = 'http://localhost:3000/Cart'
+                if(res.data === "Successfully added product to cart.") {
+                    window.location.href = 'http://localhost:3000/Cart';
+                }
             })
             .catch(err => console.log(err));
     };
@@ -62,11 +64,11 @@ function ProductView() {
             <NavigationBar></NavigationBar>
             <div class="PVcontainer">
                 <div class="PVleft">
-                    <img src={"../../assets/images/" + productData.img_filename} class="PVimg" alt="Product"></img>
+                    <img src={"../../assets/images/" + productData.img_filename} class="PVimg" alt="Product" style={productData.removed ? {backgroundColor: 'grey'} : {}}></img>
                     <div class="PVprice">${productData.price}</div>
                 </div>
                 <div class="PVright">
-                    <h1 id="PVtitle">{productData.title}</h1>
+                    <h1 id="PVtitle">{productData.title} <span>{productData.removed ? '(UNAVAILABLE)' : ''}</span></h1>
                     <div id="PVtitle-line"></div>
                     {starGenerator(productData.rating)}
                     <p><span class="product-description">Description: </span>{productData.description}</p>
