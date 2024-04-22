@@ -1,5 +1,7 @@
 .image-backer {
     width: 300px;
+    height: 220px;
+    margin-bottom: 10px;
     background: #EF8354;
     border-radius: 10px;
     display: flex;
@@ -24,6 +26,8 @@
 .product-card {
     display: flex;
     flex-direction: column;
+    text-align: center;
+    align-items: center;
     cursor: pointer;
     margin-bottom: 25px;
 }
