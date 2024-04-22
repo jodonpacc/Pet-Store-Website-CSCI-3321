@@ -12,7 +12,7 @@ function ProductCard({ id, imgname, title, destination, removed }) {
     return (
         <div className="product-card" id={id} onClick={(e) => gotoDest(e, destination)}>
             <div className="image-backer" style={removed ? {backgroundColor: 'grey'} : {}}>
-                <img src={imglink}></img>
+                <img src={imglink} width={200} height={200}></img>
             </div>
             <div className="product-card-title">{title}</div>
         </div>
