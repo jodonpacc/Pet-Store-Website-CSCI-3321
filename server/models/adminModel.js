@@ -30,7 +30,6 @@ function addListing(username, formData, file, callback) {
     // Authenticate user as admin, sending req.session.username as username and req.body.password as password
     authenticateUser(username, formData.password, (err, succ, mess, adm) => {
         if(err) {
-            console.log(err);
             callback({ message: mess, success: false });
         }
 
@@ -84,7 +83,6 @@ function setRemovedListing(username, password, prod_id, removing, callback) {
     // Authenticate user as admin, sending req.session.username as username and req.body.password as password
     authenticateUser(username, password, (err, succ, mess, adm) => {
         if(err) {
-            console.log(err);
             callback({ message: mess, success: false });
         }
 
@@ -143,7 +141,6 @@ function editListing(username, formData, file, callback) {
     // Authenticate user as admin, sending req.session.username as username and req.body.password as password
     authenticateUser(username, formData.password, (err, succ, mess, adm) => {
         if(err) {
-            console.log(err);
             callback({ message: mess, success: false });
         }
 

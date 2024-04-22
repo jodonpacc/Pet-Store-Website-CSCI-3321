@@ -131,10 +131,12 @@ function CartPage({}) {
         expDate:
         cvv:
     } */
-    const checkout = () => {
+    const checkout = (e) => {
+        e.preventDefault();
         axios.post('http://localhost:9000/cart/checkout', checkoutData)
             .then(res => {
-                if (res) {
+                alert(res.data);
+                if (res.data.startsWith('Checkout successful')) {
                     window.location.href = "/home"
                 }
             })
@@ -177,14 +179,14 @@ function CartPage({}) {
                             <div id="total-amt">{formatter.format(moneyInfo.total)}</div>
                         </div>
                     </div>
-                    <form id="checkout-form">
+                    <form id="checkout-form" onSubmit={(e) => checkout(e)}>
                         <div id="card-info">
                             <input type="text" className="checkout-input-sm" placeholder="Card Exp. Date" required="required"></input>
                             <input type="text" className="checkout-input-sm" placeholder="CVV" required="required"></input>
                         </div>
                         <input type="text" className="checkout-input" placeholder="Credit Card #" required="required"></input>
                         <input type="text" className="checkout-input" placeholder="Address, Zip, City, State" required="required"></input>
-                        <input type="submit" id="checkout-button" value="Purchase" onClick={checkout}></input>
+                        <input type="submit" id="checkout-button" value="Purchase"></input>
                     </form>
                 </div>
             </div>

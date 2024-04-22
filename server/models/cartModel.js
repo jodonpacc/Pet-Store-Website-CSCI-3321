@@ -1,5 +1,6 @@
 const db = require("../db_connection.js").db_connection;
 const CartInfo = require("./CartInfo.js");
+const authenticateUser = require('./accountModel.js').authenticateUser;
 
 /*
 Returns a list of Cart Items to display on the cart page. 
@@ -60,11 +61,55 @@ takes in {
 }
 returns successful/not
 */
-function checkout(orderInfo) {
-    // Clear user cart
-    session.cart = undefined;
-
-    // Other stuff like update product stock
+function checkout(orderInfo, session, callback) {
+    // Authenticate user (user cannot checkout unless they have an account)
+    let sql3 = 'SELECT user_name FROM Customer WHERE user_name = $1'
+    db.query(sql3, [session.username])
+        .then(async (result) => {
+            if(result.rows.length > 0) {
+                let enoughStock = true;
+                for(entry of session.cart.entries) {
+                    let sql = 'SELECT quantity FROM Product WHERE product_id = $1';
+                    const result = await db.query(sql, [entry[0]]);
+                    if(result.rows[0].quantity < entry[1].quantity) {
+                        enoughStock = false;
+                    }
+                }
+    
+                if(enoughStock) {
+                    // Insert PlacedOrder entry into database
+                    let sql = 'INSERT INTO PlacedOrder (order_subtotal, user_name) VALUES ($1, $2) RETURNING order_id';
+                    db.query(sql, [session.cart.subtotal, session.username])
+                        .then(async (result) => {
+                            const order_id = result.rows[0].order_id;
+                            for(entry of session.cart.entries) {
+                                let sql = 'INSERT INTO OrderProduct (quantity, order_id, product_id) VALUES ($1, $2, $3)';
+                                await db.query(sql, [entry[1].quantity, order_id, entry[0]]);
+    
+                                let sql2 = 'UPDATE Product SET quantity = quantity - $1 WHERE product_id = $2';
+                                await db.query(sql2, [entry[1].quantity, entry[0]]);
+                            }
+    
+                            // Clear user cart
+                            session.cart = undefined;
+                            const orderConf = order_id + '';
+                            callback('Checkout successful. Confirmation number: PS#' + orderConf.padStart(12, '0'));
+                        })
+                        .catch(err2 => {
+                            console.log(err2);
+                            callback(err2);
+                        })
+                } else {
+                    callback('One of the products in your cart does not have enough stock for this purchase.');
+                }
+            } else {
+                callback('You must be logged into a PetSmarter account to checkout.');
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            callback(err);
+        })
 }
 
 /*

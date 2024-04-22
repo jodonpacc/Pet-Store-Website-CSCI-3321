@@ -25,8 +25,10 @@ router.post('/adjustQuantity', (req, res) => {
 });
 
 // cartModel.checkout()
-router.post('/checkout', (req, res) => {
-    res.send([]);
+router.post('/checkout', async (req, res) => {
+    cartModel.checkout(req.body, req.session, (result) => {
+        return res.json(result);
+    })
 });
 
 // cartModel.addToCart() 
